@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { createHash, randomBytes } from "crypto";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
-export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {

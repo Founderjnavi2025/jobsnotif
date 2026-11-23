@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { createHash } from "crypto";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
-export const runtime = "nodejs";
 
 type TelegramUpdate = {
   message?: {

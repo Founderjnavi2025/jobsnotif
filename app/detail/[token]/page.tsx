@@ -1,10 +1,11 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
 
-export default function JobDetailPage() {
+function JobDetailContent() {
   const params = useParams<{ token: string }>();
   const token = decodeURIComponent(params.token || "");
 
@@ -222,5 +223,21 @@ export default function JobDetailPage() {
         </div>
       )}
     </main>
+  );
+}
+
+export default function JobDetailPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="job-detail-page">
+          <div className="job-detail-container">
+            Loading job details...
+          </div>
+        </main>
+      }
+    >
+      <JobDetailContent />
+    </Suspense>
   );
 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { supabase } from "../../../lib/supabase";
 
 type Job = {
@@ -14,7 +14,7 @@ type Job = {
   created_at: string;
 };
 
-export default function ManagerTokenPage() {
+function ManagerTokenPageContent() {
   const params = useParams<{ token: string }>();
   const router = useRouter();
   const token = decodeURIComponent(params.token || "");
@@ -154,5 +154,13 @@ export default function ManagerTokenPage() {
         </p>
       </div>
     </main>
+  );
+}
+
+export default function ManagerTokenPage() {
+  return (
+    <Suspense fallback={<main><p>Loading...</p></main>}>
+      <ManagerTokenPageContent />
+    </Suspense>
   );
 }

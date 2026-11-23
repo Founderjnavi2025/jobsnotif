@@ -24,6 +24,17 @@ export default function Home() {
   const [selected, setSelected] = useState("");
 
   function navigate(id: string) {
+    // Real destinations
+    if (id === "jobs") {
+      router.push("/auto-find-jobs");
+      return;
+    }
+
+    if (id === "employer") {
+      router.push("/login");
+      return;
+    }
+
     setActive(id);
     setSelected(id);
 
@@ -42,7 +53,7 @@ export default function Home() {
   return (
     <main>
       <header className="header">
-        <a className="brand" href="#" onClick={() => navigate("home")}>
+        <a className="brand" href="/">
           <span className="brand-icon">J</span>
           <span>jobs<span className="orange">notif</span></span>
         </a>
@@ -180,7 +191,7 @@ export default function Home() {
       </section>
 
       <footer className="footer">
-        <a className="brand" href="#" onClick={() => navigate("home")}>
+        <a className="brand" href="/">
           <span className="brand-icon">J</span>
           <span>jobs<span className="orange">notif</span></span>
         </a>

@@ -1,24 +1,46 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "../../lib/supabase";
 import Link from "next/link";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(true);
   const [notice, setNotice] = useState("");
 
-  function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setNotice("");
 
     if (!email.trim() || !password) {
       setNotice("Please enter your email and password.");
       return;
     }
 
-    setNotice("Login interface ready. Authentication will be connected later.");
+    setNotice("Signing in...");
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+
+    if (error) {
+      setNotice(error.message);
+      return;
+    }
+
+    if (data.user?.user_metadata?.account_type !== "business") {
+      await supabase.auth.signOut();
+      setNotice("This login is for registered business accounts only.");
+      return;
+    }
+
+    router.push("/business-profile");
   }
 
   return (

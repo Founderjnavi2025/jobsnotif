@@ -1,0 +1,356 @@
+===== BUSINESS PROFILE: COMPANY TYPE & LOAD =====
+2-import Link from "next/link";
+3-import { useEffect, useState } from "react";
+4-import { useRouter } from "next/navigation";
+5-import { supabase } from "../../lib/supabase";
+6-
+7:type Company = { company_name: string; contact_person: string; email: string; phone: string; website: string; };
+8-const emptyCompany: Company = { company_name: "", contact_person: "", email: "", phone: "", website: "" };
+9-
+10-export default function BusinessProfilePage() {
+11-  const router = useRouter();
+12-  const [company, setCompany] = useState<Company>(emptyCompany);
+13-  const [originalCompany, setOriginalCompany] = useState<Company>(emptyCompany);
+14-  const [loading, setLoading] = useState(true);
+15-  const [editing, setEditing] = useState(false);
+16-  const [saving, setSaving] = useState(false);
+17-  const [notice, setNotice] = useState("");
+18-
+19-  useEffect(() => {
+20-    async function loadBusiness() {
+21-      const { data, error } = await supabase.auth.getUser();
+22-      if (error || !data.user) { router.replace("/login"); return; }
+23-      if (data.user.user_metadata?.account_type !== "business") {
+24-        await supabase.auth.signOut(); router.replace("/login"); return;
+25-      }
+26-      const m = data.user.user_metadata || {};
+27:      const profile: Company = {
+28-        company_name: m.company_name || "",
+29-        contact_person: m.contact_person || "",
+30-        email: m.recruitment_email || data.user.email || "",
+31-        phone: m.phone || "",
+32-        website: m.website || "",
+33-      };
+34-      setCompany(profile); setOriginalCompany(profile); setLoading(false);
+35-    }
+36-    loadBusiness();
+37-  }, [router]);
+38-
+39-  function updateField(f: keyof Company, v: string) { setCompany((c) => ({ ...c, [f]: v })); }
+40-  function openEditor() { setCompany(originalCompany); setNotice(""); setEditing(true); }
+41-  function cancelEditor() { setCompany(originalCompany); setEditing(false); setNotice(""); }
+42-
+43-  async function saveProfile() {
+44-    setSaving(true); setNotice("");
+45-    const { data, error: ue } = await supabase.auth.getUser();
+46-    if (ue || !data.user) { setNotice("Session expired. Please login again."); setSaving(false); router.replace("/login"); return; }
+47-    const up: Company = {
+48-      company_name: company.company_name.trim(),
+49-      contact_person: company.contact_person.trim(),
+50-      email: company.email.trim(),
+51-      phone: company.phone.trim(),
+52-      website: company.website.trim(),
+53-    };
+54-    const { error } = await supabase.auth.updateUser({
+55-      data: { ...data.user.user_metadata, company_name: up.company_name, contact_person: up.contact_person, recruitment_email: up.email, phone: up.phone, website: up.website },
+56-    });
+57-    if (error) { setNotice(`Failed to save: ${error.message}`); setSaving(false); return; }
+58-    setCompany(up); setOriginalCompany(up); setEditing(false); setNotice("Business profile successfully updated."); setSaving(false);
+59-  }
+60-
+61-  if (loading) return <main style={{ padding: 40 }}>Loading business workspace...</main>;
+62-
+
+===== BUSINESS PROFILE: SAVE =====
+49-      contact_person: company.contact_person.trim(),
+50-      email: company.email.trim(),
+51-      phone: company.phone.trim(),
+52-      website: company.website.trim(),
+53-    };
+54:    const { error } = await supabase.auth.updateUser({
+55-      data: { ...data.user.user_metadata, company_name: up.company_name, contact_person: up.contact_person, recruitment_email: up.email, phone: up.phone, website: up.website },
+56-    });
+57-    if (error) { setNotice(`Failed to save: ${error.message}`); setSaving(false); return; }
+58-    setCompany(up); setOriginalCompany(up); setEditing(false); setNotice("Business profile successfully updated."); setSaving(false);
+59-  }
+60-
+61-  if (loading) return <main style={{ padding: 40 }}>Loading business workspace...</main>;
+62-
+63-  const inputStyle = { display: "block", width: "100%", padding: 12, marginTop: 6, border: "1px solid #ccc", borderRadius: 10, fontSize: 14, background: "#fff", color: "#111" } as const;
+64-  const labelStyle = { display: "flex", flexDirection: "column", gap: 4, fontSize: 13, fontWeight: 600 } as const;
+65-
+66-  return (
+67-    <main className="bp-clean" style={{ maxWidth: 900, margin: "0 auto", padding: 20, fontFamily: "sans-serif" }}>
+68-      <header className="bp-clean-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+69-        <Link href="/" style={{ fontWeight: 800, fontSize: 20, textDecoration: "none", color: "#111" }}>jobsnotif <small style={{ fontWeight: 400, fontSize: 12 }}>AI Job Alerts</small></Link>
+70-        <span style={{ background: "#111", color: "#fff", padding: "6px 12px", borderRadius: 999, fontSize: 12 }}>Business Account</span>
+71-      </header>
+72-
+73-      {/* BANNER ATAS - TETEP ADA BRE */}
+74-      <section className="bp-clean-hero" style={{ background: "#111", color: "#fff", borderRadius: 16, padding: 24, marginBottom: 24 }}>
+75-        <span style={{ fontSize: 12, letterSpacing: 1 }}>RECRUITMENT WORKSPACE</span>
+76-        <h1 className="bp-clean-title" style={{ fontSize: 32, lineHeight: 1.2, margin: "10px 0" }}>Your next hire starts right here.</h1>
+77-        <p style={{ opacity: 0.8 }}>Have an open position? Put your vacancy in front of potential candidates.</p>
+78-        <Link className="bp-clean-cta" href="/create-job" style={{ display: "inline-block", marginTop: 16, background: "#fff", color: "#111", padding: "12px 20px", borderRadius: 12, fontWeight: 700, textDecoration: "none" }}>+ POST A JOB - Create your job vacancy now</Link>
+79-      </section>
+80-
+81-      {/* ===== PROFIL DIBENTANGIN DI HALAMAN, BRE. BUKAN POP-UP BRE ===== */}
+82-      <section className="bp-clean-profile" style={{ border: "1px solid #ddd", borderRadius: 16, padding: 24, background: "#fff" }}>
+83-        <div className="bp-clean-profile-heading" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
+84-          <div>
+85-            <span style={{ fontSize: 11, letterSpacing: 1, color: "#888" }}>COMPANY INFORMATION</span>
+86-            <h2 style={{ fontSize: 24, margin: "6px 0" }}>Your Business Profile</h2>
+87-            <p style={{ color: "#666", margin: 0 }}>Manage the identity candidates see about your company.</p>
+88-          </div>
+89-          <button type="button" onClick={editing ? cancelEditor : openEditor} style={{ padding: "10px 18px", borderRadius: 999, background: "#111", color: "#fff", border: "none", cursor: "pointer", whiteSpace: "nowrap" }}>
+
+===== BUSINESS PROFILE: DISPLAY & EDIT =====
+111-          <div style={{ background: "#f7f7f7", padding: 16, borderRadius: 12 }}>
+112-            <div style={{ fontSize: 11, color: "#888" }}>PHONE NUMBER</div>
+113-            <div style={{ fontWeight: 700, marginTop: 4 }}>{company.phone || "Not set yet"}</div>
+114-          </div>
+115-          <div className="bp-clean-info-card bp-clean-full" style={{ background: "#f7f7f7", padding: 16, borderRadius: 12, gridColumn: "1 / -1" }}>
+116:            <div style={{ fontSize: 11, color: "#888" }}>COMPANY WEBSITE</div>
+117-            <div style={{ fontWeight: 700, marginTop: 4 }}>{company.website || "Not set yet"}</div>
+118-          </div>
+119-        </div>
+120-
+121-        {/* FORM EDIT - DIBENTANGIN DI BAWAHNYA, BRE. BUKAN POP-UP BRE */}
+122-        {editing && (
+123-          <div className="bp-clean-editor" style={{ marginTop: 24, borderTop: "2px dashed #111", paddingTop: 20 }}>
+124-            <strong style={{ fontSize: 18 }}>Edit Company Information</strong>
+125-            <p style={{ color: "#666", margin: "4px 0 16px" }}>Update your business identity</p>
+126-            <div className="bp-clean-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+127-              <label style={labelStyle}>Company Name<input style={inputStyle} value={company.company_name} onChange={(e) => updateField("company_name", e.target.value)} placeholder="Company name" /></label>
+128-              <label style={labelStyle}>Contact Person<input style={inputStyle} value={company.contact_person} onChange={(e) => updateField("contact_person", e.target.value)} placeholder="Full name" /></label>
+129-              <label style={labelStyle}>Recruitment Email<input style={inputStyle} type="email" value={company.email} onChange={(e) => updateField("email", e.target.value)} placeholder="recruitment@company.com" /></label>
+130-              <label style={labelStyle}>Phone Number<input style={inputStyle} value={company.phone} onChange={(e) => updateField("phone", e.target.value)} placeholder="+62 ..." /></label>
+131:              <label style={{ ...labelStyle, gridColumn: "1 / -1" }}>Company Website<input style={inputStyle} value={company.website} onChange={(e) => updateField("website", e.target.value)} placeholder="https://..." /></label>
+132-            </div>
+133-            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end", marginTop: 18 }}>
+134-              <button type="button" onClick={cancelEditor} disabled={saving} style={{ padding: "12px 20px", borderRadius: 10, border: "1px solid #ccc", background: "#fff", cursor: "pointer" }}>Cancel</button>
+135-              <button type="button" onClick={saveProfile} disabled={saving} style={{ padding: "12px 20px", borderRadius: 10, border: "none", background: "#111", color: "#fff", fontWeight: 700, cursor: "pointer" }}>{saving ? "Saving..." : "Save Changes"}</button>
+136-            </div>
+137-          </div>
+138-        )}
+139-      </section>
+140-
+141-      <footer className="bp-clean-footer" style={{ display: "flex", justifyContent: "space-between", marginTop: 20, fontSize: 12, color: "#888" }}>
+142-        <span>© 2026 JobsNotif</span><span>AI Job Alerts · Smarter connections.</span>
+143-      </footer>
+144-    </main>
+145-  );
+146-}
+
+===== CREATE JOB: IMPORTS & STATES =====
+"use client";
+import Link from "next/link";
+import { useEffect, useState, type FormEvent } from "react";
+import dataset from "../../../data/job_description_dataset.json";
+import { supabase } from "../../../lib/supabase";
+
+type JobTemplate = {
+  job_title: string; department: string; job_level: string; job_description: string;
+  responsibilities: string[]; qualifications: string[]; technical_skills: string[]; soft_skills: string[];
+  employment_type: string; experience_level: string;
+  salary_estimate?: { minimum: number; maximum: number; period: string; };
+};
+const templates = dataset.positions as JobTemplate[];
+function normalize(v: string) { return v.trim().toLowerCase().replace(/\s+/g, " "); }
+
+export default function CreateJobPage() {
+  const [notice, setNotice] = useState("");
+  const [templateLoaded, setTemplateLoaded] = useState(false);
+
+  // COMPANY - INI YANG DITAMBAH BRE, DARI SUPABASE
+  const [companyName, setCompanyName] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [contactPerson, setContactPerson] = useState("");
+  const [recruitmentEmail, setRecruitmentEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [website, setWebsite] = useState("");
+
+  const [jobTitle, setJobTitle] = useState("");
+  const [department, setDepartment] = useState("");
+  const [jobLevel, setJobLevel] = useState("");
+  const [employmentType, setEmploymentType] = useState("");
+  const [experienceLevel, setExperienceLevel] = useState("");
+  const [vacancies, setVacancies] = useState("");
+  const [location, setLocation] = useState("");
+  const [description, setDescription] = useState("");
+  const [responsibilities, setResponsibilities] = useState([""]);
+  const [qualifications, setQualifications] = useState([""]);
+  const [technicalSkills, setTechnicalSkills] = useState([""]);
+  const [softSkills, setSoftSkills] = useState([""]);
+  const [salaryMin, setSalaryMin] = useState("");
+  const [salaryMax, setSalaryMax] = useState("");
+  const [salaryPeriod, setSalaryPeriod] = useState("Monthly");
+
+  useEffect(() => {
+    // 1. LOAD PROFIL BRE
+    async function loadProfile() {
+      const { data } = await supabase.auth.getUser();
+      const m = data.user?.user_metadata || {};
+      setCompanyName(m.company_name || "");
+      setIndustry(m.industry || "");
+      setContactPerson(m.contact_person || "");
+      setRecruitmentEmail(m.recruitment_email || data.user?.email || "");
+      setPhone(m.phone || "");
+      setWebsite(m.website || "");
+    }
+    loadProfile();
+
+    // 2. LOAD TEMPLATE JOB BRE
+    const params = new URLSearchParams(window.location.search);
+    const selectedTitle = params.get("template") || "";
+    const selectedGroup = params.get("group") || "";
+    if (!selectedTitle) return;
+    setJobTitle(selectedTitle);
+    const match = templates.find((i) => normalize(i.job_title) === normalize(selectedTitle));
+    if (!match) { setNotice(`Jabatan "${selectedTitle}" belum memiliki template deskripsi. Silakan isi secara manual.`); return; }
+    setDepartment(match.department || "");
+    setJobLevel(match.job_level || "");
+    setEmploymentType(match.employment_type || "");
+    setExperienceLevel(match.experience_level || "");
+    setDescription(match.job_description || "");
+    setResponsibilities(match.responsibilities?.length ? match.responsibilities : [""]);
+    setQualifications(match.qualifications?.length ? match.qualifications : [""]);
+    setTechnicalSkills(match.technical_skills?.length ? match.technical_skills : [""]);
+    setSoftSkills(match.soft_skills?.length ? match.soft_skills : [""]);
+    if (match.salary_estimate) { setSalaryMin(String(match.salary_estimate.minimum || "")); setSalaryMax(String(match.salary_estimate.maximum || "")); setSalaryPeriod(match.salary_estimate.period || "Monthly"); }
+    setTemplateLoaded(true);
+    setNotice(`Job Description berhasil dimuat: ${match.job_title} · ${selectedGroup || "Template"}`);
+  }, []);
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) { e.preventDefault(); setNotice("Form preview completed. Publishing will be connected later."); }
+
+  return (
+    <main className="cj-page">
+      <header className="cj-header">
+        <Link href="/business-profile" className="cj-brand"><span className="cj-logo">J</span><span>JobsNotif</span></Link>
+        <Link href="/business-profile" className="cj-exit">← Business Profile</Link>
+      </header>
+      <div className="cj-container">
+        <div className="cj-intro"><span className="cj-eyebrow">RECRUITMENT</span><h1>Create Job Vacancy</h1><p>Create a job opportunity and find the right candidates for your company.</p></div>
+        {notice && <div className="cj-notice" role="status">{notice}</div>}
+        {templateLoaded && <div style={{ padding: "12px 16px", marginBottom: 20, borderRadius: 12, background: "#eaf8ef", color: "#176b3a", fontSize: 13, fontWeight: 600 }}>✓ JOB TEMPLATE LOADED — All fields are editable.</div>}
+
+        <form onSubmit={handleSubmit}>
+          <section className="cj-section">
+            <div className="cj-section-heading"><span className="cj-step">01</span><div><h2>Company Information</h2><p>Tell candidates about your company.</p></div></div>
+            <div className="cj-company-preview">
+              <div className="cj-company-logo">{(companyName || "B").charAt(0).toUpperCase()}</div>
+              <div><strong>{companyName || "Your Company"}</strong><span>{contactPerson || "Business Profile"} {recruitmentEmail ? `· ${recruitmentEmail}` : ""}</span></div>
+              <Link href="/business-profile">Edit Profile ↗</Link>
+            </div>
+            {/* INI YANG DIBENERIN BRE - SEKARANG ADA VALUE + ONCHANGE */}
+            <div className="cj-grid">
+              <Field label="Company Name" placeholder="Company name" value={companyName} onChange={setCompanyName} />
+              <Field label="Industry" placeholder="e.g. Technology" value={industry} onChange={setIndustry} />
+              <Field label="Contact Person" placeholder="Full name" value={contactPerson} onChange={setContactPerson} />
+              <Field label="Recruitment Email" placeholder="recruitment@company.com" type="email" value={recruitmentEmail} onChange={setRecruitmentEmail} />
+              <Field label="Phone Number" placeholder="+62 ..." value={phone} onChange={setPhone} />
+              <Field label="Company Website" placeholder="https://..." value={website} onChange={setWebsite} />
+            </div>
+          </section>
+
+          <section className="cj-section">
+            <div className="cj-section-heading"><span className="cj-step">02</span><div><h2>Position Information</h2><p>Define the position you are recruiting for.</p></div></div>
+            <div className="cj-grid">
+              <Field label="Job Title" placeholder="e.g. Software Engineer" value={jobTitle} onChange={setJobTitle} required />
+
+===== CREATE JOB: PROFILE & LOCATION FIELDS =====
+26-  const [website, setWebsite] = useState("");
+27-
+28-  const [jobTitle, setJobTitle] = useState("");
+29-  const [department, setDepartment] = useState("");
+30-  const [jobLevel, setJobLevel] = useState("");
+31-  const [employmentType, setEmploymentType] = useState("");
+32-  const [experienceLevel, setExperienceLevel] = useState("");
+33-  const [vacancies, setVacancies] = useState("");
+34:  const [location, setLocation] = useState("");
+35-  const [description, setDescription] = useState("");
+36-  const [responsibilities, setResponsibilities] = useState([""]);
+37-  const [qualifications, setQualifications] = useState([""]);
+38-  const [technicalSkills, setTechnicalSkills] = useState([""]);
+39-  const [softSkills, setSoftSkills] = useState([""]);
+40-  const [salaryMin, setSalaryMin] = useState("");
+41-  const [salaryMax, setSalaryMax] = useState("");
+42-  const [salaryPeriod, setSalaryPeriod] = useState("Monthly");
+43-
+44-  useEffect(() => {
+45-    // 1. LOAD PROFIL BRE
+46:    async function loadProfile() {
+47-      const { data } = await supabase.auth.getUser();
+48-      const m = data.user?.user_metadata || {};
+49-      setCompanyName(m.company_name || "");
+50-      setIndustry(m.industry || "");
+51-      setContactPerson(m.contact_person || "");
+52-      setRecruitmentEmail(m.recruitment_email || data.user?.email || "");
+53-      setPhone(m.phone || "");
+54-      setWebsite(m.website || "");
+55-    }
+56:    loadProfile();
+57-
+58-    // 2. LOAD TEMPLATE JOB BRE
+59-    const params = new URLSearchParams(window.location.search);
+60-    const selectedTitle = params.get("template") || "";
+61-    const selectedGroup = params.get("group") || "";
+62-    if (!selectedTitle) return;
+63-    setJobTitle(selectedTitle);
+64-    const match = templates.find((i) => normalize(i.job_title) === normalize(selectedTitle));
+65-    if (!match) { setNotice(`Jabatan "${selectedTitle}" belum memiliki template deskripsi. Silakan isi secara manual.`); return; }
+66-    setDepartment(match.department || "");
+67-    setJobLevel(match.job_level || "");
+68-    setEmploymentType(match.employment_type || "");
+69-    setExperienceLevel(match.experience_level || "");
+70-    setDescription(match.job_description || "");
+71-    setResponsibilities(match.responsibilities?.length ? match.responsibilities : [""]);
+--
+95-            <div className="cj-section-heading"><span className="cj-step">01</span><div><h2>Company Information</h2><p>Tell candidates about your company.</p></div></div>
+96-            <div className="cj-company-preview">
+97-              <div className="cj-company-logo">{(companyName || "B").charAt(0).toUpperCase()}</div>
+98-              <div><strong>{companyName || "Your Company"}</strong><span>{contactPerson || "Business Profile"} {recruitmentEmail ? `· ${recruitmentEmail}` : ""}</span></div>
+99-              <Link href="/business-profile">Edit Profile ↗</Link>
+100-            </div>
+101-            {/* INI YANG DIBENERIN BRE - SEKARANG ADA VALUE + ONCHANGE */}
+102-            <div className="cj-grid">
+103:              <Field label="Company Name" placeholder="Company name" value={companyName} onChange={setCompanyName} />
+104-              <Field label="Industry" placeholder="e.g. Technology" value={industry} onChange={setIndustry} />
+105-              <Field label="Contact Person" placeholder="Full name" value={contactPerson} onChange={setContactPerson} />
+106-              <Field label="Recruitment Email" placeholder="recruitment@company.com" type="email" value={recruitmentEmail} onChange={setRecruitmentEmail} />
+107-              <Field label="Phone Number" placeholder="+62 ..." value={phone} onChange={setPhone} />
+108-              <Field label="Company Website" placeholder="https://..." value={website} onChange={setWebsite} />
+109-            </div>
+110-          </section>
+111-
+112-          <section className="cj-section">
+113-            <div className="cj-section-heading"><span className="cj-step">02</span><div><h2>Position Information</h2><p>Define the position you are recruiting for.</p></div></div>
+114-            <div className="cj-grid">
+115-              <Field label="Job Title" placeholder="e.g. Software Engineer" value={jobTitle} onChange={setJobTitle} required />
+116-              <Field label="Department" placeholder="e.g. Engineering" value={department} onChange={setDepartment} />
+117-              <SelectField label="Job Level" value={jobLevel} onChange={setJobLevel} options={["Internship", "Entry Level", "Junior", "Mid Level", "Senior", "Manager", "Director", "Executive"]} />
+118-              <SelectField label="Employment Type" value={employmentType} onChange={setEmploymentType} options={["Full-time", "Part-time", "Contract", "Freelance", "Internship"]} />
+119-              <Field label="Experience Level" placeholder="e.g. 2 years experience" value={experienceLevel} onChange={setExperienceLevel} />
+120:              <Field label="Number of Vacancies" placeholder="e.g. 3" type="number" value={vacancies} onChange={setVacancies} />
+121-            </div>
+122:            <div className="cj-grid cj-grid-single"><Field label="Work Location" placeholder="City, province, or remote" value={location} onChange={setLocation} /></div>
+123-          </section>
+124-
+125-          <section className="cj-section">
+126-            <div className="cj-section-heading"><span className="cj-step">03</span><div><h2>Job Description</h2><p>Describe the role and what the candidate will do.</p></div></div>
+127-            <div className="cj-field"><label>Job Description <b>*</b></label><textarea required rows={6} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Describe the position..." /></div>
+128-            <ListEditor title="Responsibilities" description="Main duties and responsibilities of this position." items={responsibilities} setter={setResponsibilities} placeholder="Describe a responsibility..." />
+129-          </section>
+130-
+131-          <section className="cj-section">
+132-            <div className="cj-section-heading"><span className="cj-step">04</span><div><h2>Candidate Requirements</h2><p>What qualifications should candidates have?</p></div></div>
+133-            <ListEditor title="Qualifications" description="Education, experience, and other requirements." items={qualifications} setter={setQualifications} placeholder="Add a qualification..." />
+134-          </section>
+135-
+136-          <section className="cj-section">
+137-            <div className="cj-section-heading"><span className="cj-step">05</span><div><h2>Required Skills</h2><p>Specify the skills needed for this role.</p></div></div>
+
+===== TYPESCRIPT =====
+npm notice run jobsnotif@0.1.0 npx
+npm notice run 'tsc' --noEmit

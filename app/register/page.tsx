@@ -1,19 +1,28 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "../../lib/supabase";
 import Link from "next/link";
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function handleRegister(e: React.FormEvent<HTMLFormElement>) {
+  async function handleRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setMessage("");
 
     const form = new FormData(e.currentTarget);
+
+    const companyName = String(form.get("companyName") || "").trim();
+    const contactPerson = String(form.get("contactPerson") || "").trim();
+    const email = String(form.get("email") || "").trim();
+    const phone = String(form.get("phone") || "").trim();
+    const website = String(form.get("website") || "").trim();
     const password = String(form.get("password") || "");
     const confirm = String(form.get("confirmPassword") || "");
 
@@ -33,10 +42,38 @@ export default function RegisterPage() {
     }
 
     setLoading(true);
-    setTimeout(() => {
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/login`,
+          data: {
+            account_type: "business",
+            company_name: companyName,
+            contact_person: contactPerson,
+            phone,
+            website,
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      if (data.session) {
+        router.push("/business-profile");
+        return;
+      }
+
+      setMessage("Registration successful! Please verify your email before signing in.");
+    } catch (error) {
+      setMessage(
+        error instanceof Error ? error.message : "Registration failed."
+      );
+    } finally {
       setLoading(false);
-      setMessage("Registration form completed. Account creation will be connected later.");
-    }, 500);
+    }
   }
 
   return (

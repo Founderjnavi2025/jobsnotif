@@ -4206,3 +4206,793 @@ button { font: inherit; cursor: pointer; }
     padding: 0 17px;
   }
 }
+
+/* JOBSNOTIF AGGRESSIVE BUSINESS PROFILE */
+
+/* JOBSNOTIF AGGRESSIVE BUSINESS PROFILE */
+
+.bp-aggressive .bp-main {
+  max-width: 1120px;
+}
+
+.bp-launch {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  align-items: center;
+  gap: 35px;
+  min-height: 390px;
+  padding: 48px;
+  margin: 30px 0 55px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #111827;
+  color: white;
+}
+
+.bp-launch-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.bp-launch-eyebrow,
+.bp-secondary-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.bp-launch-eyebrow {
+  color: #aebbd0;
+}
+
+.bp-launch .bp-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #42d99b;
+  box-shadow: 0 0 12px #42d99b;
+}
+
+.bp-launch h1 {
+  margin: 24px 0 16px;
+  font-size: clamp(38px, 5vw, 61px);
+  line-height: 1.03;
+  letter-spacing: -2.5px;
+  font-weight: 850;
+}
+
+.bp-launch h1 span {
+  color: #ff9b55;
+}
+
+.bp-launch-copy > p {
+  max-width: 440px;
+  color: #b8c2d1;
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 27px;
+}
+
+.bp-launch-button {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: fit-content;
+  min-width: 290px;
+  padding: 16px 20px;
+  border-radius: 13px;
+  color: #171717;
+  background: #ff9b55;
+  text-decoration: none;
+  transition: transform .2s, background .2s;
+}
+
+.bp-launch-button:hover {
+  transform: translateY(-3px);
+  background: #ffad72;
+}
+
+.bp-launch-plus {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  border-radius: 10px;
+  background: #171717;
+  color: white;
+  font-size: 29px;
+}
+
+.bp-launch-button strong,
+.bp-launch-button small {
+  display: block;
+}
+
+.bp-launch-button strong {
+  font-size: 16px;
+  letter-spacing: .8px;
+}
+
+.bp-launch-button small {
+  margin-top: 3px;
+  font-size: 11px;
+  opacity: .75;
+}
+
+.bp-launch-arrow {
+  margin-left: auto;
+  font-size: 24px;
+}
+
+.bp-launch-note {
+  margin-top: 15px;
+  color: #aebbd0;
+  font-size: 11px;
+}
+
+.bp-launch-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 285px;
+}
+
+.bp-visual-glow {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: #ff9b55;
+  filter: blur(95px);
+  opacity: .23;
+}
+
+.bp-visual-card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 290px);
+  padding: 27px;
+  border: 1px solid #ffffff25;
+  border-radius: 19px;
+  background: linear-gradient(145deg, #283449, #182233);
+  box-shadow: 0 25px 65px #0005;
+  transform: rotate(3deg);
+}
+
+.bp-visual-icon {
+  display: grid;
+  place-items: center;
+  width: 49px;
+  height: 49px;
+  margin-bottom: 23px;
+  border-radius: 13px;
+  background: #ff9b55;
+  color: #151515;
+  font-size: 34px;
+}
+
+.bp-visual-label {
+  display: block;
+  color: #ffad72;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.bp-visual-card > strong {
+  display: block;
+  margin-top: 12px;
+  font-size: 23px;
+  line-height: 1.25;
+}
+
+.bp-visual-line {
+  height: 1px;
+  margin: 25px 0 15px;
+  background: #ffffff25;
+}
+
+.bp-visual-bottom {
+  color: #aebbd0;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+.bp-visual-floating {
+  position: absolute;
+  z-index: 2;
+  right: -5px;
+  bottom: 18px;
+  padding: 11px 15px;
+  border-radius: 9px;
+  background: #fff;
+  color: #171717;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  box-shadow: 0 10px 30px #0003;
+}
+
+.bp-secondary {
+  margin-bottom: 35px;
+}
+
+.bp-secondary-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+
+.bp-secondary-label {
+  color: #a36b42;
+}
+
+.bp-secondary-heading h2 {
+  margin: 8px 0 5px;
+  font-size: 23px;
+}
+
+.bp-secondary-heading p {
+  margin: 0;
+  color: #888;
+  font-size: 13px;
+}
+
+.bp-aggressive .bp-company-card {
+  padding: 25px;
+  border: 1px solid #e8e8e8;
+  border-radius: 17px;
+  background: #fff;
+}
+
+.bp-aggressive .bp-company-top {
+  margin-bottom: 22px;
+}
+
+.bp-loading {
+  padding: 60px 20px;
+  text-align: center;
+  color: #777;
+}
+
+@media (max-width: 760px) {
+  .bp-launch {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 30px 23px;
+    margin-top: 20px;
+  }
+
+  .bp-launch h1 {
+    font-size: 43px;
+  }
+
+  .bp-launch-visual {
+    min-height: 260px;
+  }
+
+  .bp-launch-button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .bp-visual-floating {
+    right: 0;
+  }
+
+  .bp-secondary-heading {
+    align-items: flex-start;
+  }
+
+  .bp-secondary-heading h2 {
+    font-size: 20px;
+  }
+}
+
+/* JOBSNOTIF JOB CATEGORY SELECTOR */
+
+.jt-category-card {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.jt-section-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin: 35px 0 22px;
+}
+
+.jt-section-title > span {
+  display: grid;
+  place-items: center;
+  min-width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #171717;
+  color: white;
+  font-weight: 800;
+}
+
+.jt-section-title h2 {
+  margin: 0 0 5px;
+  font-size: 22px;
+}
+
+.jt-section-title p {
+  margin: 0;
+  color: #888;
+  font-size: 13px;
+}
+
+.jt-back-category {
+  border: 0;
+  background: transparent;
+  padding: 10px 0;
+  color: #b66d3e;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.jt-position-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 17px;
+  margin: 5px 0 20px;
+  border: 1px solid #e5e5e5;
+  border-radius: 11px;
+  background: white;
+  color: #222;
+  font-size: 14px;
+  outline: none;
+}
+
+.jt-position-search:focus {
+  border-color: #e8955e;
+}
+
+.jt-position-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.jt-position-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 17px;
+  border: 1px solid #e9e9e9;
+  border-radius: 11px;
+  background: white;
+  color: #222;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 650;
+  transition: .2s;
+}
+
+.jt-position-option:hover {
+  border-color: #e8955e;
+  background: #fff8f3;
+  transform: translateY(-2px);
+}
+
+.jt-position-option b {
+  color: #d17d4b;
+}
+
+@media(max-width:600px) {
+  .jt-position-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* JOBSNOTIF BUSINESS PROFILE EDIT */
+.bp-profile-notice {
+  margin: 16px 0;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: #eef8f0;
+  color: #23743b;
+  font-size: 13px;
+}
+
+.bp-edit-panel {
+  margin: 20px 0;
+  padding: 24px;
+  border: 1px solid #e4e7ec;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.bp-edit-panel-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.bp-edit-panel-heading strong {
+  font-size: 17px;
+}
+
+.bp-edit-panel-heading span {
+  color: #777;
+  font-size: 13px;
+}
+
+.bp-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.bp-edit-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #333;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.bp-edit-grid input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 12px 13px;
+  border: 1px solid #dfe3e8;
+  border-radius: 9px;
+  background: #fff;
+  color: #222;
+  font: inherit;
+  font-weight: 400;
+  outline: none;
+}
+
+.bp-edit-grid input:focus {
+  border-color: #5268df;
+  box-shadow: 0 0 0 3px rgba(82, 104, 223, 0.1);
+}
+
+.bp-edit-full {
+  grid-column: 1 / -1;
+}
+
+.bp-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.bp-edit-actions button {
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.bp-edit-cancel {
+  background: #f0f1f3;
+  color: #444;
+}
+
+.bp-edit-save {
+  background: #202b55;
+  color: #fff;
+}
+
+.bp-edit-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .bp-edit-panel {
+    padding: 17px;
+  }
+
+  .bp-edit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bp-edit-full {
+    grid-column: auto;
+  }
+}
+
+/* FIX: FORCE BUSINESS PROFILE EDIT PANEL */
+.bp-secondary .bp-edit-panel {
+  display: block !important;
+  position: relative !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100%;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  box-sizing: border-box;
+  margin: 24px 0 !important;
+  padding: 24px !important;
+  background: #ffffff !important;
+  border: 1px solid #dfe3e8 !important;
+  border-radius: 16px;
+  color: #222222 !important;
+  z-index: 2;
+}
+
+.bp-secondary .bp-edit-panel * {
+  visibility: visible;
+}
+
+.bp-secondary .bp-edit-grid input {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  min-height: 44px;
+  color: #222 !important;
+  background: #fff !important;
+}
+
+.bp-secondary .bp-edit-panel-heading,
+.bp-secondary .bp-edit-grid,
+.bp-secondary .bp-edit-actions {
+  display: flex;
+}
+
+.bp-secondary .bp-edit-grid {
+  display: grid;
+}
+
+/* ===== FIX EDIT FORM - BIAR MUNCUL BRE ===== */
+.bp-edit-panel {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin-top: 20px;
+  background: #ffffff;
+  border: 2px solid #111;
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  z-index: 10;
+}
+.bp-edit-panel-heading { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
+.bp-edit-panel-heading strong { font-size: 18px; }
+.bp-edit-panel-heading span { font-size: 13px; color: #666; }
+.bp-edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.bp-edit-grid label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; }
+.bp-edit-grid input {
+  display: block !important;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #fff;
+  color: #111;
+}
+.bp-edit-full { grid-column: 1 / -1; }
+.bp-edit-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 18px; }
+.bp-edit-cancel { padding: 12px 20px; border-radius: 10px; border: 1px solid #ccc; background: #fff; cursor: pointer; }
+.bp-edit-save { padding: 12px 20px; border-radius: 10px; border: none; background: #111; color: #fff; font-weight: 700; cursor: pointer; }
+.bp-edit { padding: 10px 18px; border-radius: 999px; background: #111; color: #fff; border: none; cursor: pointer; }
+.bp-profile-notice { background: #eaffea; border: 1px solid #b8e6b8; padding: 12px; border-radius: 10px; margin: 12px 0; }
+@media (max-width: 640px) { .bp-edit-grid { grid-template-columns: 1fr; } }
+
+/* JOBSNOTIF BUSINESS PROFILE - RESPONSIVE UI */
+.bp-clean {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.bp-clean-header {
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.bp-clean-hero {
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 12px 35px rgba(0,0,0,.09);
+}
+
+.bp-clean-title {
+  max-width: 620px;
+  letter-spacing: -1.2px;
+  font-weight: 800;
+}
+
+.bp-clean-cta {
+  transition: transform .2s ease, background .2s ease;
+}
+
+.bp-clean-cta:hover {
+  transform: translateY(-2px);
+  background: #e8e8e8 !important;
+}
+
+.bp-clean-profile {
+  box-sizing: border-box;
+  box-shadow: 0 8px 28px rgba(0,0,0,.045);
+}
+
+.bp-clean-profile-heading {
+  flex-wrap: wrap;
+}
+
+.bp-clean-info-grid {
+  min-width: 0;
+}
+
+.bp-clean-info-card {
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  border: 1px solid #eeeeee;
+  transition: border-color .2s ease, transform .2s ease;
+}
+
+.bp-clean-info-card:hover {
+  border-color: #c8c8c8;
+  transform: translateY(-2px);
+}
+
+.bp-clean-editor {
+  min-width: 0;
+  animation: bp-editor-in .22s ease;
+}
+
+@keyframes bp-editor-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bp-clean-form-grid {
+  min-width: 0;
+}
+
+.bp-clean-form-grid label {
+  min-width: 0;
+}
+
+.bp-clean-form-grid input {
+  box-sizing: border-box;
+  min-width: 0;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.bp-clean-form-grid input:focus {
+  border-color: #222 !important;
+  box-shadow: 0 0 0 3px rgba(0,0,0,.08);
+}
+
+.bp-clean-profile button,
+.bp-clean-editor button {
+  transition: opacity .2s, transform .2s;
+}
+
+.bp-clean-profile button:hover,
+.bp-clean-editor button:hover {
+  opacity: .82;
+}
+
+.bp-clean-editor button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.bp-clean-footer {
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+@media (max-width: 640px) {
+  .bp-clean {
+    padding: 14px !important;
+  }
+
+  .bp-clean-header {
+    align-items: flex-start !important;
+  }
+
+  .bp-clean-hero {
+    padding: 22px !important;
+    border-radius: 14px !important;
+  }
+
+  .bp-clean-title {
+    font-size: 28px !important;
+    letter-spacing: -.8px;
+  }
+
+  .bp-clean-cta {
+    display: block !important;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .bp-clean-profile {
+    padding: 18px !important;
+  }
+
+  .bp-clean-profile-heading {
+    align-items: flex-start !important;
+  }
+
+  .bp-clean-profile-heading h2 {
+    font-size: 21px !important;
+  }
+
+  .bp-clean-profile-heading p {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .bp-clean-profile-heading button {
+    flex-shrink: 0;
+  }
+
+  .bp-clean-info-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .bp-clean-full {
+    grid-column: auto !important;
+  }
+
+  .bp-clean-info-card {
+    padding: 14px !important;
+  }
+
+  .bp-clean-form-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .bp-clean-form-grid label {
+    grid-column: auto !important;
+  }
+
+  .bp-clean-editor {
+    padding-top: 18px !important;
+  }
+
+  .bp-clean-editor > div:last-child {
+    flex-wrap: wrap;
+  }
+
+  .bp-clean-editor button {
+    flex: 1;
+    min-width: 110px;
+  }
+
+  .bp-clean-footer {
+    font-size: 11px !important;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .bp-clean-info-grid,
+  .bp-clean-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -46,7 +46,8 @@ export default function AutoFindJobsPage() {
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<string[]>([]);
-  const [telegramId, setTelegramId] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [saving, setSaving] = useState(false);
   const [token, setToken] = useState("");
   const [mode, setMode] = useState<"daftar" | "hapus">("daftar");
   const [status, setStatus] = useState("");
@@ -78,19 +79,56 @@ export default function AutoFindJobsPage() {
     router.push(`/detail/${encodeURIComponent(token.trim())}`);
   }
 
-  function handleSubscribe(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubscribe(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (mode === "daftar" && selected.length === 0) {
+    if (saving) return;
+
+    if (mode === "hapus") {
+      setStatus("Fitur unsubscribe belum tersedia. Akun notifikasi belum diubah.");
+      return;
+    }
+
+    if (fullName.trim().length < 2) {
+      setStatus("Masukkan nama lengkap terlebih dahulu.");
+      return;
+    }
+
+    if (selected.length === 0) {
       setStatus("Pilih minimal satu minat pekerjaan.");
       return;
     }
 
-    setStatus(
-      mode === "daftar"
-        ? "Preferensi pekerjaan berhasil disiapkan. Sistem notifikasi akan dihubungkan nanti."
-        : "Permintaan berhenti notifikasi berhasil disiapkan."
-    );
+    const formData = new FormData(e.currentTarget);
+
+    setSaving(true);
+    setStatus("Menyimpan pendaftaran...");
+
+    try {
+      const response = await fetch("/api/candidates/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: fullName.trim(),
+          whatsapp: String(formData.get("whatsapp") || "").trim(),
+          interests: selected,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success || !result.telegramUrl) {
+        setStatus(result.error || "Pendaftaran gagal. Silakan coba lagi.");
+        setSaving(false);
+        return;
+      }
+
+      setStatus("Pendaftaran tersimpan. Menghubungkan ke Telegram...");
+      window.location.assign(result.telegramUrl);
+    } catch {
+      setStatus("Tidak dapat menghubungi server. Periksa koneksi lalu coba lagi.");
+      setSaving(false);
+    }
   }
 
   return (
@@ -160,7 +198,7 @@ export default function AutoFindJobsPage() {
           <div>
             <span className="afj-section-kicker">PERSONALIZE YOUR EXPERIENCE</span>
             <h2>Find jobs that match your interests.</h2>
-            <p>Set your Telegram ID and select the job categories you want to follow.</p>
+            <p>Register your name and select the job categories you want to follow.</p>
           </div>
           <div className="afj-free-label">FREE FOR CANDIDATES</div>
         </div>
@@ -168,26 +206,31 @@ export default function AutoFindJobsPage() {
         <div className="afj-form-card">
           <div className="afj-form-top">
             <div>
-              <span className="afj-step">01 — TELEGRAM</span>
-              <h3>Connect your Telegram</h3>
-              <p>Enter your numeric Telegram ID to receive job notifications.</p>
+              <span className="afj-step">01 — YOUR PROFILE</span>
+                <h3>Register for job alerts</h3>
+                <p>Enter your name and preferences. Connect Telegram in the next step.</p>
             </div>
             <div className="afj-telegram-icon">✈</div>
           </div>
 
           <form onSubmit={handleSubscribe}>
-            <label className="afj-label" htmlFor="telegramId">Telegram ID</label>
-            <input
-              id="telegramId"
-              className="afj-input"
-              value={telegramId}
-              onChange={e => setTelegramId(e.target.value)}
-              placeholder="Example: 123456789"
-              required
-            />
-            <p className="afj-help">Use your numeric Telegram ID, not your username.</p>
+            <label className="afj-label" htmlFor="fullName">Full Name</label>
+              <input
+                id="fullName"
+                name="fullName"
+                type="text"
+                className="afj-input"
+                value={fullName}
+                onChange={e => setFullName(e.target.value)}
+                placeholder="Your full name"
+                minLength={2}
+                maxLength={100}
+                autoComplete="name"
+                required
+              />
+              <p className="afj-help">Your Telegram account will be connected securely after registration.</p>
 
-            <label className="afj-label afj-whatsapp-label" htmlFor="whatsapp">
+              <label className="afj-label afj-whatsapp-label" htmlFor="whatsapp">
               WhatsApp Number <span>(Optional)</span>
             </label>
             <input
@@ -312,9 +355,9 @@ export default function AutoFindJobsPage() {
             <button
               type="submit"
               className="afj-submit"
-              disabled={mode === "daftar" && selected.length === 0}
+              disabled={saving || (mode === "daftar" && selected.length === 0)}
             >
-              {mode === "daftar" ? "Activate Job Notifications" : "Stop My Notifications"}
+              {saving ? "Registering..." : mode === "daftar" ? "Continue to Telegram" : "Stop My Notifications"}
               <span>→</span>
             </button>
 

@@ -1,0 +1,457 @@
+===== PACKAGE =====
+{
+  "name": "jobsnotif",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --webpack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.119.2",
+    "next": "16.4.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "4.3.3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.6",
+    "tailwindcss": "4.3.3",
+    "typescript": "^5"
+  }
+}
+===== LOGIN =====
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(true);
+  const [notice, setNotice] = useState("");
+
+  function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (!email.trim() || !password) {
+      setNotice("Please enter your email and password.");
+      return;
+    }
+
+    setNotice("Login interface ready. Authentication will be connected later.");
+  }
+
+  return (
+    <main className="login-page">
+      <header className="login-header">
+        <Link href="/" className="brand">
+          <span className="brand-icon">J</span>
+          <span>jobs<span className="orange">notif</span></span>
+        </Link>
+        <Link href="/" className="back-home">← Back to home</Link>
+      </header>
+
+      <section className="login-layout">
+        <div className="login-visual">
+          <span className="eyebrow">WELCOME BACK</span>
+          <h1>Your next<br />opportunity<br /><span>starts here.</span></h1>
+          <p>
+            Sign in to your JobsNotif account and continue
+            discovering better opportunities.
+          </p>
+
+          <div className="login-visual-card">
+            <div className="visual-symbol">J</div>
+            <div>
+              <strong>JobsNotif</strong>
+              <small>AI Job Alerts</small>
+            </div>
+            <span className="visual-spark">✦</span>
+          </div>
+        </div>
+
+        <div className="login-card">
+          <div className="login-card-heading">
+            <span className="login-mini-icon">↗</span>
+            <h2>Welcome back</h2>
+            <p>Enter your details to access your account.</p>
+          </div>
+
+          <form onSubmit={handleLogin}>
+            <label htmlFor="email">Email address</label>
+            <div className="login-input-wrap">
+              <span>✉</span>
+              <input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="password-label">
+              <label htmlFor="password">Password</label>
+              <button
+                type="button"
+                className="forgot-button"
+                onClick={() => setNotice("Password recovery will be available when authentication is connected.")}
+              >
+                Forgot password?
+              </button>
+            </div>
+
+            <div className="login-input-wrap">
+              <span>♙</span>
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+
+            <label className="remember-row">
+              <input
+                type="checkbox"
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
+              />
+              <span>Remember me</span>
+            </label>
+
+            {notice && <div className="login-notice">{notice}</div>}
+
+            <button type="submit" className="login-submit">
+              Sign in <span>→</span>
+            </button>
+          </form>
+
+          <div className="login-divider"><span>NEW TO JOBSNOTIF?</span></div>
+
+          <Link href="/register" className="create-account">
+            Create an account <span>↗</span>
+          </Link>
+
+          <p className="login-terms">
+            By continuing, you agree to our Terms of Service and Privacy Policy.
+          </p>
+        </div>
+      </section>
+
+      <footer className="login-footer">
+        <span>© 2026 JobsNotif</span>
+        <span>Smarter connections. Better opportunities.</span>
+      </footer>
+    </main>
+  );
+}
+===== REGISTER =====
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+
+export default function RegisterPage() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  function handleRegister(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setMessage("");
+
+    const form = new FormData(e.currentTarget);
+    const password = String(form.get("password") || "");
+    const confirm = String(form.get("confirmPassword") || "");
+
+    if (password.length < 8) {
+      setMessage("Password must be at least 8 characters.");
+      return;
+    }
+
+    if (password !== confirm) {
+      setMessage("Passwords do not match.");
+      return;
+    }
+
+    if (!form.get("terms")) {
+      setMessage("Please accept the Terms & Conditions.");
+      return;
+    }
+
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setMessage("Registration form completed. Account creation will be connected later.");
+    }, 500);
+  }
+
+  return (
+    <main className="business-register-page">
+      <div className="business-register-container">
+
+        <Link href="/" className="business-register-logo">
+          <span>jobs</span><strong>notif</strong>
+        </Link>
+
+        <div className="business-register-layout">
+          <section className="business-register-intro">
+            <span className="business-register-tag">FOR BUSINESS</span>
+            <h1>Build your team with smarter recruitment.</h1>
+            <p>
+              Create your company account and discover a simpler way
+              to manage recruitment with JobsNotif.
+            </p>
+
+            <div className="business-register-benefits">
+              <div>✓ Manage your recruitment activity</div>
+              <div>✓ Discover potential candidates</div>
+              <div>✓ Get smarter job notifications</div>
+            </div>
+          </section>
+
+          <section className="business-register-card">
+            <div className="business-register-heading">
+              <h2>Create Business Account</h2>
+              <p>Register your company to get started.</p>
+            </div>
+
+            <form onSubmit={handleRegister}>
+              <label>Company Name</label>
+              <input
+                name="companyName"
+                placeholder="Your company name"
+                required
+              />
+
+              <label>Contact Person</label>
+              <input
+                name="contactPerson"
+                placeholder="Full name"
+                required
+              />
+
+              <label>Recruitment Email</label>
+              <input
+                name="email"
+                type="email"
+                placeholder="recruitment@company.com"
+                required
+              />
+
+              <label>Phone Number</label>
+              <input
+                name="phone"
+                type="tel"
+                placeholder="+62 812..."
+                required
+              />
+
+              <label>Company Website <span>(Optional)</span></label>
+              <input
+                name="website"
+                type="url"
+                placeholder="https://company.com"
+              />
+
+              <label>Password</label>
+              <div className="business-register-password">
+                <input
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Minimum 8 characters"
+                  minLength={8}
+                  required
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
+
+              <label>Confirm Password</label>
+              <div className="business-register-password">
+                <input
+                  name="confirmPassword"
+                  type={showConfirm ? "text" : "password"}
+                  placeholder="Re-enter your password"
+                  required
+                />
+                <button type="button" onClick={() => setShowConfirm(!showConfirm)}>
+                  {showConfirm ? "Hide" : "Show"}
+                </button>
+              </div>
+
+              <label className="business-register-terms">
+                <input type="checkbox" name="terms" />
+                <span>I agree to the Terms & Conditions and Privacy Policy.</span>
+              </label>
+
+              {message && (
+                <div className="business-register-message">{message}</div>
+              )}
+
+              <button
+                type="submit"
+                className="business-register-submit"
+                disabled={loading}
+              >
+                {loading ? "Processing..." : "Create Business Account"}
+              </button>
+            </form>
+
+            <div className="business-register-footer">
+              Already have a business account? <Link href="/login">Sign in</Link>
+            </div>
+          </section>
+        </div>
+
+        <Link href="/" className="business-register-back">← Back to Home</Link>
+      </div>
+    </main>
+  );
+}
+===== BUSINESS PROFILE =====
+"use client";
+
+import Link from "next/link";
+
+export default function BusinessProfilePage() {
+  return (
+    <main className="bp-screen">
+
+      <header className="bp-header">
+        <Link href="/" className="bp-logo">
+          jobs<span>notif</span>
+          <small>AI Job Alerts</small>
+        </Link>
+
+        <div className="bp-account">
+          <div className="bp-account-avatar">B</div>
+          <div className="bp-account-info">
+            <strong>Business Account</strong>
+            <span>Company Workspace</span>
+          </div>
+        </div>
+      </header>
+
+      <section className="bp-main">
+
+        <div className="bp-welcome">
+          <span className="bp-eyebrow">
+            <span className="bp-status-dot" />
+            BUSINESS WORKSPACE
+          </span>
+
+          <h1>
+            Welcome to <span>JobsNotif.</span>
+          </h1>
+
+          <p>
+            Your company is ready. Let's find the right people
+            to grow your business.
+          </p>
+        </div>
+
+        <div className="bp-content">
+
+          <section className="bp-company-card">
+            <div className="bp-company-top">
+              <div className="bp-company-logo">B</div>
+              <div className="bp-company-heading">
+                <span>YOUR BUSINESS PROFILE</span>
+                <h2>Your Company</h2>
+                <p>Company account information</p>
+              </div>
+              <button className="bp-edit" type="button">
+                Edit Profile <span>↗</span>
+              </button>
+            </div>
+
+            <div className="bp-company-details">
+              <div className="bp-detail">
+                <span>CONTACT PERSON</span>
+                <strong>Not set yet</strong>
+              </div>
+              <div className="bp-detail">
+                <span>RECRUITMENT EMAIL</span>
+                <strong>Not set yet</strong>
+              </div>
+              <div className="bp-detail">
+                <span>PHONE NUMBER</span>
+                <strong>Not set yet</strong>
+              </div>
+              <div className="bp-detail">
+                <span>COMPANY WEBSITE</span>
+                <strong>Not set yet</strong>
+              </div>
+            </div>
+
+            <div className="bp-profile-note">
+              <span>ⓘ</span>
+              Complete your company information to build trust with candidates.
+            </div>
+          </section>
+
+          <section className="bp-action-card">
+            <div className="bp-action-decoration">
+              <div className="bp-decoration-circle bp-circle-one" />
+              <div className="bp-decoration-circle bp-circle-two" />
+              <div className="bp-document-icon">
+                <span>＋</span>
+              </div>
+            </div>
+
+            <div className="bp-action-content">
+              <span className="bp-action-label">YOUR NEXT STEP</span>
+              <h2>Ready to find your next talent?</h2>
+              <p>
+                Create a job vacancy and let JobsNotif connect
+                your company with potential candidates.
+              </p>
+
+              <Link href="/create-job" className="bp-create-button">
+                <span>＋</span>
+                Create Job Vacancy
+                <span className="bp-button-arrow">→</span>
+              </Link>
+
+              <small>Start your recruitment journey here.</small>
+            </div>
+          </section>
+
+        </div>
+
+        <footer className="bp-footer">
+          <span>© 2026 JobsNotif</span>
+          <span>AI Job Alerts</span>
+        </footer>
+
+      </section>
+    </main>
+  );
+}
+===== ENV CHECK =====
+Supabase ENV exists
+URL configured
+ANON configured

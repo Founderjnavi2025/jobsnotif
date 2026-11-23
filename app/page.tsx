@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const menus = [
   { id: "home", label: "Home" },
@@ -17,6 +18,7 @@ const actions = [
 ];
 
 export default function Home() {
+  const router = useRouter();
   const [active, setActive] = useState("home");
   const [message, setMessage] = useState("Welcome to JobsNotif. What would you like to explore?");
   const [selected, setSelected] = useState("");
@@ -58,8 +60,8 @@ export default function Home() {
         </nav>
 
         <div className="account">
-          <button className="login" onClick={() => navigate("employer")}>Login</button>
-          <button className="register" onClick={() => navigate("employer")}>Register</button>
+          <button className="login" onClick={() => router.push("/login")}>Login</button>
+          <button className="register" onClick={() => router.push("/register")}>Register</button>
         </div>
       </header>
 

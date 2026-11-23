@@ -1,0 +1,1167 @@
+===== MANAGER PAGE =====
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+
+const candidates = [
+  { id: 1, name: "Candidate Name 1", source: "Telegram", cv: "cv.pdf" },
+  { id: 2, name: "Candidate Name 2", source: "Telegram", cv: "cv.pdf" },
+  { id: 3, name: "Candidate Name 3", source: "Telegram", cv: "cv.pdf" },
+];
+
+export default function ManagerPage() {
+  const [hidden, setHidden] = useState<number[]>([]);
+  const [files, setFiles] = useState<Record<number, string>>({});
+  const [pdfUrls, setPdfUrls] = useState<Record<number, string>>({});
+
+  function toggleHide(id: number) {
+    setHidden((current) =>
+      current.includes(id)
+        ? current.filter((item) => item !== id)
+        : [...current, id]
+    );
+  }
+
+  function choosePDF(id: number, file?: File) {
+    if (!file) return;
+    if (file.type !== "application/pdf") {
+      alert("Please choose a PDF file.");
+      return;
+    }
+
+    setPdfUrls((current) => {
+      if (current[id]) URL.revokeObjectURL(current[id]);
+      return { ...current, [id]: URL.createObjectURL(file) };
+    });
+    setFiles((current) => ({ ...current, [id]: file.name }));
+  }
+
+  return (
+    <main className="mgr-page">
+      <header className="mgr-header">
+        <Link href="/" className="mgr-brand">
+          <span className="mgr-logo">J</span>
+          JobsNotif
+        </Link>
+        <span className="mgr-label">MANAGER</span>
+      </header>
+
+      <div className="mgr-container">
+        <Link href="/business-profile" className="mgr-back">
+          ← Business Profile
+        </Link>
+
+        <section className="mgr-intro">
+          <span className="mgr-eyebrow">RECRUITMENT CENTER</span>
+          <h1>Your Review Vacancy</h1>
+          <p>Track your vacancy distribution and review candidate applications in one place.</p>
+        </section>
+
+        <section className="mgr-vacancy">
+          <div className="mgr-vacancy-top">
+            <div>
+              <span className="mgr-muted">VACANCY STATUS</span>
+              <h2>Your vacancy has been sent</h2>
+            </div>
+            <span className="mgr-sent"><span /> Sent</span>
+          </div>
+          <div className="mgr-vacancy-bottom">
+            <span>Job Vacancy</span>
+            <strong>Recently published vacancy</strong>
+          </div>
+        </section>
+
+        <section className="mgr-progress">
+          <div className="mgr-progress-head">
+            <div>
+              <span className="mgr-muted">APPLICATION OVERVIEW</span>
+              <h2>Your Candidate Applications</h2>
+            </div>
+            <strong className="mgr-count">1<span>/100</span></strong>
+          </div>
+          <div className="mgr-track"><div className="mgr-fill" /></div>
+          <p>1 candidate application received</p>
+        </section>
+
+        <div className="mgr-list-heading">
+          <div>
+            <h2>Candidate Applications</h2>
+            <p>Candidate information extracted from submitted CV documents.</p>
+          </div>
+          <span className="mgr-total">03 Candidates</span>
+        </div>
+
+        <div className="mgr-table-wrap">
+          <table className="mgr-table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Candidate Name</th>
+                <th>Source</th>
+                <th>Education</th>
+                <th>Experience</th>
+                <th>Skills</th>
+                <th>CV Document</th>
+                <th>Privacy</th>
+              </tr>
+            </thead>
+            <tbody>
+              {candidates.map((candidate) => {
+                const isHidden = hidden.includes(candidate.id);
+
+                return (
+                  <tr key={candidate.id}>
+                    <td>{candidate.id}</td>
+                    <td>
+                      <strong>{isHidden ? "Information Hidden" : candidate.name}</strong>
+                    </td>
+                    <td><span className="mgr-telegram">{candidate.source}</span></td>
+                    <td>{isHidden ? "••••••" : "Not provided"}</td>
+                    <td>{isHidden ? "••••••" : "Not provided"}</td>
+                    <td>{isHidden ? "••••••" : "Not provided"}</td>
+                    <td>
+                      <div className="mgr-pdf-cell">
+                        <label className="mgr-choose">
+                          Choose PDF
+                          <input
+                            type="file"
+                            accept="application/pdf"
+                            onChange={(e) => choosePDF(candidate.id, e.target.files?.[0])}
+                          />
+                        </label>
+                        {pdfUrls[candidate.id] ? (
+                          <a
+                            className="mgr-pdf-link"
+                            href={pdfUrls[candidate.id]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {files[candidate.id]} ↗
+                          </a>
+                        ) : (
+                          <span className="mgr-pdf-empty">{candidate.cv}</span>
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        className={isHidden ? "mgr-show" : "mgr-hide"}
+                        onClick={() => toggleHide(candidate.id)}
+                      >
+                        {isHidden ? "Show Info" : "Hide Info"}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mgr-note">
+          Sample candidate data. PDF links currently use locally selected files.
+          Candidate information extraction will be connected later.
+        </p>
+      </div>
+    </main>
+  );
+}
+
+===== DETAIL JOB PAGE =====
+"use client";
+
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useRef, useState } from "react";
+
+export default function JobDetailPage() {
+  const params = useParams<{ token: string }>();
+  const token = decodeURIComponent(params.token || "");
+
+  const applyRef = useRef<HTMLDivElement>(null);
+  const [welcome, setWelcome] = useState(true);
+  const [file, setFile] = useState<File | null>(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  function goToApply() {
+    setWelcome(false);
+    setTimeout(() => {
+      applyRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 100);
+  }
+
+  function chooseFile(selected?: File) {
+    if (!selected) return;
+
+    if (selected.type !== "application/pdf") {
+      setError("Please upload a PDF document.");
+      setFile(null);
+      return;
+    }
+
+    setError("");
+    setFile(selected);
+  }
+
+  function submitApplication(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (!file) {
+      setError("Please upload your CV before submitting.");
+      return;
+    }
+
+    setError("");
+    setSubmitted(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  if (submitted) {
+    return (
+      <main className="job-detail-page">
+        <div className="job-success">
+          <div className="job-success-icon">✓</div>
+          <span className="job-detail-eyebrow">APPLICATION COMPLETED</span>
+          <h1>Congratulations!</h1>
+          <p>Your application has been submitted successfully.</p>
+          <div className="job-success-card">
+            <strong>What happens next?</strong>
+            <p>Your application is now waiting for the company to review.</p>
+            <span>Vacancy token: {token}</span>
+            <span>Document: {file?.name}</span>
+          </div>
+          <Link href="/auto-find-jobs" className="job-detail-back">
+            Back to JobsNotif
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="job-detail-page">
+      <header className="job-detail-header">
+        <Link href="/" className="job-detail-brand">
+          <span>J</span> JobsNotif
+        </Link>
+        <span className="job-detail-header-label">JOB OPPORTUNITY</span>
+      </header>
+
+      <div className="job-detail-container">
+        <Link href="/auto-find-jobs" className="job-detail-back">
+          ← Back to Search
+        </Link>
+
+        <div className="job-detail-token">
+          <span>VACANCY TOKEN</span>
+          <strong>{token}</strong>
+        </div>
+
+        <section className="job-detail-card">
+          <span className="job-detail-eyebrow">JOB OPPORTUNITY</span>
+          <h1>Frontend Developer</h1>
+          <p className="job-detail-company">Company Name · Technology</p>
+
+          <div className="job-detail-tags">
+            <span>Full-time</span>
+            <span>Remote</span>
+            <span>Entry - Mid Level</span>
+          </div>
+
+          <div className="job-detail-section">
+            <h2>Job Description</h2>
+            <p>
+              We are looking for a Frontend Developer to build and maintain
+              modern, responsive web applications and deliver excellent
+              user experiences.
+            </p>
+          </div>
+
+          <div className="job-detail-section">
+            <h2>Responsibilities</h2>
+            <ul>
+              <li>Develop and maintain responsive web interfaces.</li>
+              <li>Work with designers and backend developers.</li>
+              <li>Improve application performance and usability.</li>
+            </ul>
+          </div>
+
+          <div className="job-detail-section">
+            <h2>Qualifications</h2>
+            <ul>
+              <li>Experience with JavaScript and modern web technologies.</li>
+              <li>Knowledge of React or Next.js.</li>
+              <li>Good communication and problem-solving skills.</li>
+            </ul>
+          </div>
+
+          <div className="job-detail-section">
+            <h2>Technical Skills</h2>
+            <div className="job-detail-tags">
+              <span>JavaScript</span>
+              <span>React</span>
+              <span>Next.js</span>
+              <span>CSS</span>
+            </div>
+          </div>
+
+          <div className="job-detail-section">
+            <h2>Salary & Compensation</h2>
+            <p>Salary information provided by the company.</p>
+          </div>
+
+          <button
+            type="button"
+            className="job-detail-bottom-apply"
+            onClick={goToApply}
+          >
+            Apply for This Job <span>→</span>
+          </button>
+        </section>
+
+        <section className="job-apply-section" ref={applyRef}>
+          <span className="job-detail-eyebrow">APPLICATION FORM</span>
+          <h2>Apply for This Job</h2>
+          <p>Upload your CV in PDF format to submit your application.</p>
+
+          <form onSubmit={submitApplication}>
+            <label className="job-upload-box">
+              <span className="job-upload-icon">↑</span>
+              <strong>Upload Your CV</strong>
+              <span>Choose a PDF file from your device</span>
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={(e) => chooseFile(e.target.files?.[0])}
+              />
+              {file && (
+                <span className="job-upload-selected">
+                  ✓ {file.name}
+                </span>
+              )}
+            </label>
+
+            {error && <p className="job-detail-error">{error}</p>}
+
+            <button type="submit" className="job-detail-submit">
+              Submit Application <span>→</span>
+            </button>
+          </form>
+
+          <p className="job-detail-privacy">
+            Your CV will be provided to the recruiting company.
+          </p>
+        </section>
+
+        <footer className="job-detail-footer">
+          JobsNotif · AI Job Alerts
+        </footer>
+      </div>
+
+      {!welcome && !submitted && (
+        <button
+          type="button"
+          className="job-floating-apply"
+          onClick={goToApply}
+        >
+          Apply Now →
+        </button>
+      )}
+
+      {welcome && (
+        <div className="job-welcome-overlay">
+          <div className="job-welcome-box">
+            <span className="job-welcome-icon">✦</span>
+            <span className="job-detail-eyebrow">YOUR NEXT OPPORTUNITY</span>
+            <h2>Ready to Apply?</h2>
+            <p>
+              This opportunity could be your next career move.
+              Submit your CV and let the company discover you.
+            </p>
+            <button type="button" onClick={goToApply}>
+              APPLY NOW <span>→</span>
+            </button>
+            <span className="job-welcome-caption">
+              Tap to continue
+            </span>
+          </div>
+        </div>
+      )}
+    </main>
+  );
+}
+
+===== AUTO FIND JOBS =====
+"use client";
+
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+const interestGroups = [
+  {
+    id: "technology",
+    label: "Technology & IT",
+    options: ["Software Developer", "Frontend Developer", "Backend Developer", "Full Stack Developer", "Mobile Developer", "UI/UX Designer", "Data Analyst", "AI Engineer", "Cyber Security", "IT Support"]
+  },
+  {
+    id: "business",
+    label: "Business & Management",
+    options: ["Business Development", "Project Manager", "Product Manager", "Business Analyst", "Operations Manager", "Admin", "Secretary"]
+  },
+  {
+    id: "marketing",
+    label: "Marketing & Creative",
+    options: ["Digital Marketing", "Social Media Specialist", "SEO Specialist", "Graphic Designer", "Content Creator", "Video Editor", "Copywriter"]
+  },
+  {
+    id: "finance",
+    label: "Finance & Accounting",
+    options: ["Accountant", "Finance Staff", "Tax Specialist", "Auditor", "Financial Analyst"]
+  },
+  {
+    id: "sales",
+    label: "Sales & Customer Service",
+    options: ["Sales Executive", "Sales Manager", "Customer Service", "Call Center", "Account Executive"]
+  },
+  {
+    id: "engineering",
+    label: "Engineering & Manufacturing",
+    options: ["Mechanical Engineer", "Electrical Engineer", "Quality Control", "Production Staff", "Machine Operator", "Technician"]
+  },
+  {
+    id: "general",
+    label: "General & Other",
+    options: ["Human Resources", "Recruitment", "Warehouse Staff", "Logistics", "Driver", "Security", "Internship"]
+  }
+];
+
+export default function AutoFindJobsPage() {
+  const router = useRouter();
+  const [search, setSearch] = useState("");
+  const [selected, setSelected] = useState<string[]>([]);
+  const [telegramId, setTelegramId] = useState("");
+  const [token, setToken] = useState("");
+  const [mode, setMode] = useState<"daftar" | "hapus">("daftar");
+  const [status, setStatus] = useState("");
+
+  const filteredGroups = useMemo(() => {
+    const q = search.trim().toLowerCase();
+
+    return interestGroups.map(group => ({
+      ...group,
+      options: group.options.filter(option =>
+        !q ||
+        option.toLowerCase().includes(q) ||
+        group.label.toLowerCase().includes(q)
+      )
+    })).filter(group => group.options.length > 0);
+  }, [search]);
+
+  function toggleInterest(id: string) {
+    setSelected(current =>
+      current.includes(id)
+        ? current.filter(item => item !== id)
+        : [...current, id]
+    );
+  }
+
+  function handleToken(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!token.trim()) return;
+    router.push(`/detail/${encodeURIComponent(token.trim())}`);
+  }
+
+  function handleSubscribe(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (mode === "daftar" && selected.length === 0) {
+      setStatus("Pilih minimal satu minat pekerjaan.");
+      return;
+    }
+
+    setStatus(
+      mode === "daftar"
+        ? "Preferensi pekerjaan berhasil disiapkan. Sistem notifikasi akan dihubungkan nanti."
+        : "Permintaan berhenti notifikasi berhasil disiapkan."
+    );
+  }
+
+  return (
+    <main className="afj-page">
+      <header className="afj-header">
+        <Link href="/" className="afj-logo">
+          jobs<strong>notif</strong>
+          <span>AI Job Alerts</span>
+        </Link>
+
+        <div className="afj-header-label">
+          CANDIDATE PORTAL
+        </div>
+      </header>
+
+      <section className="afj-hero">
+        <div className="afj-hero-content">
+          <span className="afj-eyebrow">
+            <span className="afj-live-dot" />
+            JOB ALERTS FOR EVERY OPPORTUNITY
+          </span>
+
+          <h1>
+            Your next opportunity,
+            <span> delivered directly to you.</span>
+          </h1>
+
+          <p>
+            Choose the jobs you are interested in. JobsNotif helps
+            you discover opportunities and receive job alerts
+            through Telegram.
+          </p>
+
+          <div className="afj-hero-points">
+            <span>✓ Personalized job alerts</span>
+            <span>✓ Choose your interests</span>
+            <span>✓ Simple Telegram notifications</span>
+          </div>
+        </div>
+
+        <div className="afj-token-card">
+          <div className="afj-token-icon">🎫</div>
+          <div>
+            <span className="afj-token-label">HAVE A JOB TOKEN?</span>
+            <h2>Already received a job token?</h2>
+            <p>Enter the token provided by the recruiter to view your job details.</p>
+          </div>
+
+          <form onSubmit={handleToken} className="afj-token-form">
+            <input
+              value={token}
+              onChange={e => setToken(e.target.value)}
+              placeholder="Example: JN-8K2J9"
+              required
+            />
+            <button type="submit">Search <span>→</span></button>
+          </form>
+
+          <div className="afj-token-note">
+            <span>🔒</span> Use the token provided by the company.
+          </div>
+        </div>
+      </section>
+
+      <section className="afj-workspace">
+        <div className="afj-section-heading">
+          <div>
+            <span className="afj-section-kicker">PERSONALIZE YOUR EXPERIENCE</span>
+            <h2>Find jobs that match your interests.</h2>
+            <p>Set your Telegram ID and select the job categories you want to follow.</p>
+          </div>
+          <div className="afj-free-label">FREE FOR CANDIDATES</div>
+        </div>
+
+        <div className="afj-form-card">
+          <div className="afj-form-top">
+            <div>
+              <span className="afj-step">01 — TELEGRAM</span>
+              <h3>Connect your Telegram</h3>
+              <p>Enter your numeric Telegram ID to receive job notifications.</p>
+            </div>
+            <div className="afj-telegram-icon">✈</div>
+          </div>
+
+          <form onSubmit={handleSubscribe}>
+            <label className="afj-label" htmlFor="telegramId">Telegram ID</label>
+            <input
+              id="telegramId"
+              className="afj-input"
+              value={telegramId}
+              onChange={e => setTelegramId(e.target.value)}
+              placeholder="Example: 123456789"
+              required
+            />
+            <p className="afj-help">Use your numeric Telegram ID, not your username.</p>
+
+            <label className="afj-label afj-whatsapp-label" htmlFor="whatsapp">
+              WhatsApp Number <span>(Optional)</span>
+            </label>
+            <input
+              id="whatsapp"
+              name="whatsapp"
+              type="tel"
+              className="afj-input"
+              placeholder="Example: +62 812..."
+            />
+            <p className="afj-help">Optional. Add your WhatsApp number if you want to provide an additional contact channel.</p>
+
+            <div className="afj-divider" />
+
+            <div className="afj-interest-heading">
+              <div>
+                <span className="afj-step">02 — JOB PREFERENCES</span>
+                <h3>What kind of job are you looking for?</h3>
+                <p>Select one or more positions that interest you.</p>
+              </div>
+              <span className="afj-selected-count">{selected.length} selected</span>
+
+===== CREATE JOB SUBMIT AREA =====
+66-    if (!match) { setNotice(`Jabatan "${selectedTitle}" belum memiliki template deskripsi. Silakan isi secara manual.`); return; }
+67-    setDepartment(match.department || "");
+68-    setJobLevel(match.job_level || "");
+69-    setEmploymentType(match.employment_type || "");
+70-    setExperienceLevel(match.experience_level || "");
+71-    setDescription(match.job_description || "");
+72-    setResponsibilities(match.responsibilities?.length ? match.responsibilities : [""]);
+73-    setQualifications(match.qualifications?.length ? match.qualifications : [""]);
+74-    setTechnicalSkills(match.technical_skills?.length ? match.technical_skills : [""]);
+75-    setSoftSkills(match.soft_skills?.length ? match.soft_skills : [""]);
+76-    if (match.salary_estimate) { setSalaryMin(String(match.salary_estimate.minimum || "")); setSalaryMax(String(match.salary_estimate.maximum || "")); setSalaryPeriod(match.salary_estimate.period || "Monthly"); }
+77-    setTemplateLoaded(true);
+78-    setNotice(`Job Description berhasil dimuat: ${match.job_title} · ${selectedGroup || "Template"}`);
+79-  }, []);
+80-
+81:  function handleSubmit(e: FormEvent<HTMLFormElement>) { e.preventDefault(); setNotice("Form preview completed. Publishing will be connected later."); }
+82-
+83-  return (
+84-    <main className="cj-page">
+85-      <header className="cj-header">
+86-        <Link href="/business-profile" className="cj-brand"><span className="cj-logo">J</span><span>JobsNotif</span></Link>
+87-        <Link href="/business-profile" className="cj-exit">← Business Profile</Link>
+88-      </header>
+89-      <div className="cj-container">
+90-        <div className="cj-intro"><span className="cj-eyebrow">RECRUITMENT</span><h1>Create Job Vacancy</h1><p>Create a job opportunity and find the right candidates for your company.</p></div>
+91-        {notice && <div className="cj-notice" role="status">{notice}</div>}
+92-        {templateLoaded && <div style={{ padding: "12px 16px", marginBottom: 20, borderRadius: 12, background: "#eaf8ef", color: "#176b3a", fontSize: 13, fontWeight: 600 }}>✓ JOB TEMPLATE LOADED — All fields are editable.</div>}
+93-
+94:        <form onSubmit={handleSubmit}>
+95-          <section className="cj-section">
+96-            <div className="cj-section-heading"><span className="cj-step">01</span><div><h2>Company Information</h2><p>Tell candidates about your company.</p></div></div>
+97-            <div className="cj-company-preview">
+98-              <div className="cj-company-logo">{(companyName || "B").charAt(0).toUpperCase()}</div>
+99-              <div><strong>{companyName || "Your Company"}</strong><span>{contactPerson || "Business Profile"} {recruitmentEmail ? `· ${recruitmentEmail}` : ""}</span></div>
+100-              <Link href="/business-profile">Edit Profile ↗</Link>
+101-            </div>
+102-            {/* INI YANG DIBENERIN BRE - SEKARANG ADA VALUE + ONCHANGE */}
+103-            <div className="cj-grid">
+104-              <Field label="Company Name" placeholder="Company name" value={companyName} onChange={setCompanyName} />
+105-              <Field label="Industry" placeholder="e.g. Technology" value={industry} onChange={setIndustry} />
+106-              <Field label="Contact Person" placeholder="Full name" value={contactPerson} onChange={setContactPerson} />
+107-              <Field label="Recruitment Email" placeholder="recruitment@company.com" type="email" value={recruitmentEmail} onChange={setRecruitmentEmail} />
+108-              <Field label="Phone Number" placeholder="+62 ..." value={phone} onChange={setPhone} />
+109-              <Field label="Company Website" placeholder="https://..." value={website} onChange={setWebsite} />
+110-            </div>
+111-          </section>
+112-
+113-          <section className="cj-section">
+114-            <div className="cj-section-heading"><span className="cj-step">02</span><div><h2>Position Information</h2><p>Define the position you are recruiting for.</p></div></div>
+115-            <div className="cj-grid">
+116-              <Field label="Job Title" placeholder="e.g. Software Engineer" value={jobTitle} onChange={setJobTitle} required />
+117-              <Field label="Department" placeholder="e.g. Engineering" value={department} onChange={setDepartment} />
+118-              <SelectField label="Job Level" value={jobLevel} onChange={setJobLevel} options={["Internship", "Entry Level", "Junior", "Mid Level", "Senior", "Manager", "Director", "Executive"]} />
+119-              <SelectField label="Employment Type" value={employmentType} onChange={setEmploymentType} options={["Full-time", "Part-time", "Contract", "Freelance", "Internship"]} />
+120-              <Field label="Experience Level" placeholder="e.g. 2 years experience" value={experienceLevel} onChange={setExperienceLevel} />
+121-              <Field label="Number of Vacancies" placeholder="e.g. 3" type="number" value={vacancies} onChange={setVacancies} />
+122-            </div>
+123-            <div className="cj-grid cj-grid-single"><Field label="Work Location" placeholder="City, province, or remote" value={location} onChange={setLocation} /></div>
+124-          </section>
+125-
+126-          <section className="cj-section">
+127-            <div className="cj-section-heading"><span className="cj-step">03</span><div><h2>Job Description</h2><p>Describe the role and what the candidate will do.</p></div></div>
+128-            <div className="cj-field"><label>Job Description <b>*</b></label><textarea required rows={6} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Describe the position..." /></div>
+129-            <ListEditor title="Responsibilities" description="Main duties and responsibilities of this position." items={responsibilities} setter={setResponsibilities} placeholder="Describe a responsibility..." />
+--
+139-            <ListEditor title="Technical Skills" description="Tools, technologies, and professional abilities." items={technicalSkills} setter={setTechnicalSkills} placeholder="e.g. Python, Excel, Project Management" />
+140-            <div className="cj-sub-divider" />
+141-            <ListEditor title="Soft Skills" description="Personal and interpersonal abilities." items={softSkills} setter={setSoftSkills} placeholder="e.g. Communication, Leadership" />
+142-          </section>
+143-
+144-          <section className="cj-section">
+145-            <div className="cj-section-heading"><span className="cj-step">06</span><div><h2>Salary & Compensation</h2><p>Provide a salary range for this opportunity.</p></div></div>
+146-            <div className="cj-grid cj-grid-three">
+147-              <Field label="Minimum Salary (IDR)" placeholder="e.g. 5000000" type="number" value={salaryMin} onChange={setSalaryMin} />
+148-              <Field label="Maximum Salary (IDR)" placeholder="e.g. 8000000" type="number" value={salaryMax} onChange={setSalaryMax} />
+149-              <SelectField label="Salary Period" value={salaryPeriod} onChange={setSalaryPeriod} options={["Monthly", "Yearly", "Daily", "Hourly"]} />
+150-            </div>
+151-            <p className="cj-hint">You can leave salary information empty if it is confidential.</p>
+152-          </section>
+153-
+154:          <div className="cj-submit-area"><p>Review your information before continuing.</p><button type="submit" className="cj-submit">Preview Job Vacancy <span>→</span></button><Link href="/business-profile" className="cj-cancel">Cancel and return to profile</Link></div>
+155-        </form>
+156-      </div>
+157-    </main>
+158-  );
+159-}
+160-
+161:function Field({ label, placeholder, type = "text", required = false, value, onChange }: { label: string; placeholder: string; type?: string; required?: boolean; value?: string; onChange?: (v: string) => void; }) {
+162-  return (<div className="cj-field"><label>{label}{required && <b> *</b>}</label><input type={type} placeholder={placeholder} required={required} value={value} onChange={onChange ? (e) => onChange(e.target.value) : undefined} /></div>);
+163-}
+164-function SelectField({ label, options, value, onChange }: { label: string; options: string[]; value: string; onChange: (v: string) => void; }) {
+165-  return (<div className="cj-field"><label>{label}</label><select value={value} onChange={(e) => onChange(e.target.value)}><option value="">Select {label}</option>{value && !options.includes(value) && <option value={value}>{value}</option>}{options.map((o) => (<option key={o} value={o}>{o}</option>))}</select></div>);
+166-}
+167-function ListEditor({ title, description, items, setter, placeholder }: { title: string; description: string; items: string[]; setter: (v: string[]) => void; placeholder: string; }) {
+168-  function update(i: number, v: string) { const u = [...items]; u[i] = v; setter(u); }
+169-  function remove(i: number) { if (items.length <= 1) return; setter(items.filter((_, x) => x !== i)); }
+170-  return (<div className="cj-list-editor"><div className="cj-list-heading"><div><h4>{title}</h4><p>{description}</p></div><button type="button" className="cj-add" onClick={() => setter([...items, ""])}>+ Add</button></div>{items.map((item, idx) => (<div className="cj-list-row" key={idx}><span className="cj-list-number">{idx + 1}</span><input value={item} onChange={(e) => update(idx, e.target.value)} placeholder={placeholder} /><button type="button" className="cj-remove" onClick={() => remove(idx)}>×</button></div>))}</div>);
+171-}
+
+===== EXISTING SUPABASE TABLE REFERENCES =====
+./app/manager/page.tsx:57:          <p>Track your vacancy distribution and review candidate applications in one place.</p>
+./app/manager/page.tsx:78:              <h2>Your Candidate Applications</h2>
+./app/manager/page.tsx:88:            <h2>Candidate Applications</h2>
+./app/detail/[token]/page.tsx:109:              modern, responsive web applications and deliver excellent
+
+===== PROJECT ROOT =====
+total 560
+drwx------.  11 u0_a229 u0_a229   3452 Nov 23 13:17 .
+drwx------.  20 u0_a229 u0_a229  20480 Nov 23 10:24 ..
+-rw-------.   1 u0_a229 u0_a229    143 Nov 23 11:57 .env.local
+drwx------.   7 u0_a229 u0_a229   3452 Nov 23 11:53 .git
+-rw-------.   1 u0_a229 u0_a229    480 Nov 23 10:17 .gitignore
+drwx------.   3 u0_a229 u0_a229   3452 Nov 23 12:46 .next
+-rw-------.   1 u0_a229 u0_a229    679 Nov 23 10:20 AGENTS.md
+-rw-------.   1 u0_a229 u0_a229   1450 Nov 23 10:17 README.md
+drwx------.  10 u0_a229 u0_a229   3452 Nov 23 11:39 app
+drwx------.   2 u0_a229 u0_a229   3452 Nov 23 10:35 backup_landing_20261123_103547
+drwx------.   3 u0_a229 u0_a229   3452 Nov 23 12:22 data
+drwx------.   2 u0_a229 u0_a229   3452 Nov 23 11:59 diagnostic
+-rw-------.   1 u0_a229 u0_a229   3049 Nov 23 13:01 epatch_location.py
+-rw-------.   1 u0_a229 u0_a229    465 Nov 23 10:17 eslint.config.mjs
+-rw-------.   1 u0_a229 u0_a229  23695 Nov 23 12:58 jobsnotif_location_diagnostic.txt
+-rw-------.   1 u0_a229 u0_a229  35770 Nov 23 13:15 jobsnotif_token_diagnostic.txt
+-rw-------.   1 u0_a229 u0_a229  30244 Nov 23 13:17 jobsnotif_token_diagnostic_2.txt
+drwx------.   2 u0_a229 u0_a229   3452 Nov 23 12:01 lib
+-rw-------.   1 u0_a229 u0_a229    296 Nov 23 10:24 next-env.d.ts
+-rw-------.   1 u0_a229 u0_a229    366 Nov 23 10:17 next.config.ts
+drwx------. 293 u0_a229 u0_a229  20480 Nov 23 11:59 node_modules
+-rw-------.   1 u0_a229 u0_a229 238583 Nov 23 11:59 package-lock.json
+-rw-------.   1 u0_a229 u0_a229    590 Nov 23 11:59 package.json
+-rw-------.   1 u0_a229 u0_a229   3343 Nov 23 13:06 patch_industry.py
+-rw-------.   1 u0_a229 u0_a229   4182 Nov 23 13:02 patch_location.py
+drwx------.   2 u0_a229 u0_a229   3452 Nov 23 10:17 public
+-rw-------.   1 u0_a229 u0_a229    666 Nov 23 10:17 tsconfig.json
+-rw-------.   1 u0_a229 u0_a229 116369 Nov 23 13:07 tsconfig.tsbuildinfo
+
+===== GLOBAL CSS: MANAGER AND PROFILE =====
+3004-}
+3005-
+3006-/* MANAGER PAGE */
+3007:.mgr-page {
+3008-  min-height: 100vh;
+3009-  background: #f6f8fb;
+3010-  color: #17243a;
+3011-}
+3012-
+3013-.mgr-header {
+3014-  height: 64px;
+3015-  background: white;
+--
+3607-}
+3608-
+3609-/* JOB DETAIL AND APPLICATION */
+3610:.job-detail-page {
+3611-  min-height: 100vh;
+3612-  padding-bottom: 60px;
+3613-  background: #f7f9fc;
+3614-  color: #172033;
+3615-}
+3616-
+3617:.job-detail-header {
+3618-  height: 68px;
+3619-  padding: 0 6%;
+3620-  background: #fff;
+3621-  border-bottom: 1px solid #e8edf4;
+3622-  display: flex;
+3623-  align-items: center;
+3624-  justify-content: space-between;
+3625-}
+3626-
+3627:.job-detail-brand {
+3628-  display: flex;
+3629-  align-items: center;
+3630-  gap: 9px;
+3631-  color: #172033;
+3632-  text-decoration: none;
+3633-  font-size: 19px;
+3634-  font-weight: 800;
+3635-}
+3636-
+3637:.job-detail-brand span {
+3638-  display: grid;
+3639-  place-items: center;
+3640-  width: 34px;
+3641-  height: 34px;
+3642-  background: #2563eb;
+3643-  color: white;
+3644-  border-radius: 9px;
+3645-}
+3646-
+3647:.job-detail-header-label,
+3648:.job-detail-token span {
+3649-  font-size: 10px;
+3650-  font-weight: 800;
+3651-  letter-spacing: 1px;
+3652-  color: #64748b;
+3653-}
+3654-
+3655:.job-detail-container {
+3656-  width: min(850px, 92%);
+3657-  margin: 30px auto;
+3658-}
+3659-
+3660:.job-detail-back {
+3661-  display: inline-block;
+3662-  margin-bottom: 22px;
+3663-  color: #64748b;
+3664-  font-size: 13px;
+3665-  font-weight: 600;
+3666-  text-decoration: none;
+3667-}
+3668-
+3669:.job-detail-token {
+3670-  display: flex;
+3671-  justify-content: space-between;
+3672-  align-items: center;
+3673-  margin-bottom: 14px;
+3674-  padding: 13px 17px;
+3675-  background: #eff6ff;
+3676-  border: 1px solid #dbeafe;
+3677-  border-radius: 10px;
+3678-}
+3679-
+3680:.job-detail-token strong {
+3681-  color: #2563eb;
+3682-  font-size: 13px;
+3683-}
+3684-
+3685:.job-detail-card,
+3686-.job-apply-section {
+3687-  padding: 30px;
+3688-  background: white;
+3689-  border: 1px solid #e8edf4;
+3690-  border-radius: 16px;
+3691-}
+3692-
+3693:.job-detail-eyebrow {
+3694-  color: #2563eb;
+3695-  font-size: 10px;
+3696-  font-weight: 800;
+3697-  letter-spacing: 1.2px;
+3698-}
+3699-
+3700:.job-detail-card h1 {
+3701-  margin: 10px 0 5px;
+3702-  font-size: clamp(27px, 5vw, 38px);
+3703-  letter-spacing: -1.2px;
+3704-}
+3705-
+3706:.job-detail-company {
+3707-  color: #64748b;
+3708-  font-size: 14px;
+3709-}
+3710-
+3711:.job-detail-tags {
+3712-  display: flex;
+3713-  flex-wrap: wrap;
+3714-  gap: 8px;
+3715-  margin: 20px 0;
+3716-}
+3717-
+3718:.job-detail-tags span {
+3719-  padding: 7px 11px;
+3720-  border-radius: 7px;
+3721-  background: #eff6ff;
+3722-  color: #2563eb;
+3723-  font-size: 11px;
+3724-  font-weight: 700;
+3725-}
+3726-
+3727:.job-detail-section {
+3728-  padding: 22px 0;
+3729-  border-top: 1px solid #edf1f5;
+3730-}
+3731-
+3732:.job-detail-section h2 {
+3733-  margin: 0 0 11px;
+3734-  font-size: 16px;
+3735-}
+3736-
+3737:.job-detail-section p,
+3738:.job-detail-section li {
+3739-  color: #64748b;
+3740-  font-size: 13px;
+3741-  line-height: 1.8;
+3742-}
+3743-
+3744:.job-detail-section ul {
+3745-  padding-left: 19px;
+3746-}
+3747-
+3748:.job-detail-bottom-apply,
+3749:.job-detail-submit {
+3750-  width: 100%;
+3751-  padding: 15px 20px;
+3752-  border: none;
+3753-  border-radius: 10px;
+3754-  background: #2563eb;
+3755-  color: white;
+3756-  font-size: 14px;
+3757-  font-weight: 800;
+3758-  cursor: pointer;
+3759-}
+3760-
+3761:.job-detail-bottom-apply span,
+3762:.job-detail-submit span {
+3763-  margin-left: 8px;
+3764-}
+3765-
+3766-.job-apply-section {
+3767-  margin-top: 20px;
+3768-  scroll-margin-top: 100px;
+3769-}
+3770-
+--
+3823-  overflow-wrap: anywhere;
+3824-}
+3825-
+3826:.job-detail-error {
+3827-  color: #dc2626;
+3828-  font-size: 12px;
+3829-  margin: 10px 0;
+3830-}
+3831-
+3832:.job-detail-privacy,
+3833:.job-detail-footer {
+3834-  color: #94a3b8;
+3835-  font-size: 11px;
+3836-  text-align: center;
+3837-  margin-top: 18px;
+3838-}
+3839-
+3840-.job-floating-apply {
+3841-  position: fixed;
+--
+3977-}
+3978-
+3979-@media (max-width: 600px) {
+3980:  .job-detail-card,
+3981-  .job-apply-section {
+3982-    padding: 21px 17px;
+3983-  }
+3984-
+3985:  .job-detail-header {
+3986-    padding: 0 4%;
+3987-  }
+3988-
+3989-  .job-floating-apply {
+3990-    right: 15px;
+3991-    bottom: 16px;
+3992-  }
+3993-}
+--
+4797-@media (max-width: 640px) { .bp-edit-grid { grid-template-columns: 1fr; } }
+4798-
+4799-/* JOBSNOTIF BUSINESS PROFILE - RESPONSIVE UI */
+4800:.bp-clean {
+4801-  width: 100%;
+4802-  box-sizing: border-box;
+4803-}
+4804-
+4805:.bp-clean-header {
+4806-  flex-wrap: wrap;
+4807-  gap: 14px;
+4808-}
+4809-
+4810:.bp-clean-hero {
+4811-  overflow: hidden;
+4812-  position: relative;
+4813-  box-shadow: 0 12px 35px rgba(0,0,0,.09);
+4814-}
+4815-
+4816:.bp-clean-title {
+4817-  max-width: 620px;
+4818-  letter-spacing: -1.2px;
+4819-  font-weight: 800;
+4820-}
+4821-
+4822:.bp-clean-cta {
+4823-  transition: transform .2s ease, background .2s ease;
+4824-}
+4825-
+4826:.bp-clean-cta:hover {
+4827-  transform: translateY(-2px);
+4828-  background: #e8e8e8 !important;
+4829-}
+4830-
+4831:.bp-clean-profile {
+4832-  box-sizing: border-box;
+4833-  box-shadow: 0 8px 28px rgba(0,0,0,.045);
+4834-}
+4835-
+4836:.bp-clean-profile-heading {
+4837-  flex-wrap: wrap;
+4838-}
+4839-
+4840:.bp-clean-info-grid {
+4841-  min-width: 0;
+4842-}
+4843-
+4844:.bp-clean-info-card {
+4845-  min-width: 0;
+4846-  box-sizing: border-box;
+4847-  overflow-wrap: anywhere;
+4848-  border: 1px solid #eeeeee;
+4849-  transition: border-color .2s ease, transform .2s ease;
+4850-}
+4851-
+4852:.bp-clean-info-card:hover {
+4853-  border-color: #c8c8c8;
+4854-  transform: translateY(-2px);
+4855-}
+4856-
+4857:.bp-clean-editor {
+4858-  min-width: 0;
+4859-  animation: bp-editor-in .22s ease;
+4860-}
+4861-
+4862-@keyframes bp-editor-in {
+4863-  from { opacity: 0; transform: translateY(8px); }
+4864-  to { opacity: 1; transform: translateY(0); }
+4865-}
+4866-
+4867:.bp-clean-form-grid {
+4868-  min-width: 0;
+4869-}
+4870-
+4871:.bp-clean-form-grid label {
+4872-  min-width: 0;
+4873-}
+4874-
+4875:.bp-clean-form-grid input {
+4876-  box-sizing: border-box;
+4877-  min-width: 0;
+4878-  outline: none;
+4879-  transition: border-color .2s, box-shadow .2s;
+4880-}
+4881-
+4882:.bp-clean-form-grid input:focus {
+4883-  border-color: #222 !important;
+4884-  box-shadow: 0 0 0 3px rgba(0,0,0,.08);
+4885-}
+4886-
+4887:.bp-clean-profile button,
+4888:.bp-clean-editor button {
+4889-  transition: opacity .2s, transform .2s;
+4890-}
+4891-
+4892:.bp-clean-profile button:hover,
+4893:.bp-clean-editor button:hover {
+4894-  opacity: .82;
+4895-}
+4896-
+4897:.bp-clean-editor button:disabled {
+4898-  opacity: .5;
+4899-  cursor: not-allowed;
+4900-}
+4901-
+4902:.bp-clean-footer {
+4903-  flex-wrap: wrap;
+4904-  gap: 8px 16px;
+4905-}
+4906-
+4907-@media (max-width: 640px) {
+4908:  .bp-clean {
+4909-    padding: 14px !important;
+4910-  }
+4911-
+4912:  .bp-clean-header {
+4913-    align-items: flex-start !important;
+4914-  }
+4915-
+4916:  .bp-clean-hero {
+4917-    padding: 22px !important;
+4918-    border-radius: 14px !important;
+4919-  }
+4920-
+4921:  .bp-clean-title {
+4922-    font-size: 28px !important;
+4923-    letter-spacing: -.8px;
+4924-  }
+4925-
+4926:  .bp-clean-cta {
+4927-    display: block !important;
+4928-    text-align: center;
+4929-    line-height: 1.5;
+4930-  }
+4931-
+4932:  .bp-clean-profile {
+4933-    padding: 18px !important;
+4934-  }
+4935-
+4936:  .bp-clean-profile-heading {
+4937-    align-items: flex-start !important;
+4938-  }
+4939-
+4940:  .bp-clean-profile-heading h2 {
+4941-    font-size: 21px !important;
+4942-  }
+4943-
+4944:  .bp-clean-profile-heading p {
+4945-    font-size: 13px;
+4946-    line-height: 1.5;
+4947-  }
+4948-
+4949:  .bp-clean-profile-heading button {
+4950-    flex-shrink: 0;
+4951-  }
+4952-
+4953:  .bp-clean-info-grid {
+4954-    grid-template-columns: minmax(0, 1fr) !important;
+4955-    gap: 10px !important;
+4956-  }
+4957-
+4958:  .bp-clean-full {
+4959-    grid-column: auto !important;
+4960-  }
+4961-
+4962:  .bp-clean-info-card {
+4963-    padding: 14px !important;
+4964-  }
+4965-
+4966:  .bp-clean-form-grid {
+4967-    grid-template-columns: minmax(0, 1fr) !important;
+4968-    gap: 12px !important;
+4969-  }
+4970-
+4971:  .bp-clean-form-grid label {
+4972-    grid-column: auto !important;
+4973-  }
+4974-
+4975:  .bp-clean-editor {
+4976-    padding-top: 18px !important;
+4977-  }
+4978-
+4979:  .bp-clean-editor > div:last-child {
+4980-    flex-wrap: wrap;
+4981-  }
+4982-
+4983:  .bp-clean-editor button {
+4984-    flex: 1;
+4985-    min-width: 110px;
+4986-  }
+4987-
+4988:  .bp-clean-footer {
+4989-    font-size: 11px !important;
+4990-  }
+4991-}
+4992-
+4993-@media (min-width: 641px) and (max-width: 900px) {
+4994:  .bp-clean-info-grid,
+4995:  .bp-clean-form-grid {
+4996-    grid-template-columns: repeat(2, minmax(0, 1fr));
+4997-  }
+4998-}

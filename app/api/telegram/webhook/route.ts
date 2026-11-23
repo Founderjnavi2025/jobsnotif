@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 
 
 type TelegramUpdate = {
+  update_id?: number;
   message?: {
     text?: string;
     chat?: {
@@ -42,15 +43,30 @@ export async function POST(request: Request) {
     const update = (await request.json()) as TelegramUpdate;
     const message = update.message;
     const text = message?.text?.trim() || "";
+
+    console.log("JobsNotif Telegram update:", {
+      updateId: update.update_id ?? null,
+      command: text.startsWith("/start") ? "/start" : "other",
+    });
     const chatId = message?.chat?.id;
     const telegramUserId = message?.from?.id;
     const username = message?.from?.username || null;
 
-    if (
-      !text.startsWith("/start ") ||
-      !chatId ||
-      !telegramUserId
-    ) {
+    if (!chatId || !telegramUserId) {
+      return NextResponse.json({ ok: true });
+    }
+
+    if (text === "/start") {
+      await sendTelegramMessage(
+        botToken,
+        chatId,
+        "Untuk mengaktifkan akun JobsNotif, silakan buka kembali tautan aktivasi dari halaman pendaftaran."
+      );
+
+      return NextResponse.json({ ok: true });
+    }
+
+    if (!text.startsWith("/start ")) {
       return NextResponse.json({ ok: true });
     }
 
@@ -126,7 +142,7 @@ export async function POST(request: Request) {
     await sendTelegramMessage(
       botToken,
       chatId,
-      "Selamat datang di JobsNotif! 🎉\n\nAkun Telegram Anda berhasil terhubung.\n\nAnda sekarang terdaftar untuk menerima notifikasi lowongan sesuai minat pekerjaan Anda."
+      "AKUN ANDA AKTIF.\n\nAnda akan menerima notifikasi lowongan kerja yang sesuai dengan minat pekerjaan Anda."
     );
 
     return NextResponse.json({ ok: true });
@@ -160,4 +176,12 @@ async function sendTelegramMessage(
   if (!response.ok) {
     console.error("Telegram welcome message failed:", response.status);
   }
+}
+
+
+export async function GET() {
+  return NextResponse.json({
+    ok: true,
+    status: "JobsNotif Telegram webhook is running",
+  });
 }

@@ -1,0 +1,608 @@
+{
+  "version": "1.0",
+  "language": "id-ID",
+  "currency": "IDR",
+  "positions": [
+    {
+      "job_title": "CEO",
+      "department": "Executive Management",
+      "job_level": "Executive",
+      "job_description": "Memimpin dan mengarahkan seluruh strategi bisnis perusahaan, memastikan pertumbuhan yang berkelanjutan, serta mewakili perusahaan di hadapan pemegang saham, mitra strategis, dan regulator. Bertanggung jawab atas kinerja keseluruhan organisasi dan pengambilan keputusan strategis tingkat tertinggi.",
+      "responsibilities": [
+        "Merumuskan dan mengeksekusi visi, misi, dan strategi jangka panjang perusahaan.",
+        "Memimpin rapat dewan direksi dan melaporkan kinerja perusahaan kepada pemegang saham.",
+        "Menetapkan target kinerja tahunan dan memastikan pencapaian seluruh unit bisnis.",
+        "Mengambil keputusan final atas investasi, ekspansi, dan kemitraan strategis.",
+        "Membangun budaya organisasi dan memastikan tata kelola perusahaan yang baik (GCG).",
+        "Merekrut, membina, dan mengevaluasi jajaran direksi dan manajer senior.",
+        "Mewakili perusahaan dalam hubungan dengan regulator, investor, dan media.",
+        "Mengawasi pengelolaan risiko perusahaan dan kepatuhan terhadap regulasi."
+      ],
+      "qualifications": [
+        "Gelar S1/S2 di bidang Bisnis, Manajemen, Ekonomi, atau Teknik.",
+        "Pengalaman minimal 15 tahun di posisi manajemen senior, dengan 5 tahun di level C-suite.",
+        "Rekam jejak terbukti dalam memimpin pertumbuhan bisnis dan transformasi organisasi.",
+        "Pemahaman mendalam tentang pasar Indonesia dan regulasi bisnis lokal.",
+        "Kemampuan analisis keuangan dan pengambilan keputusan strategis yang kuat.",
+        "Jaringan profesional yang luas di industri terkait."
+      ],
+      "technical_skills": [
+        "Strategic Planning",
+        "Financial Modeling & Analysis",
+        "Corporate Governance",
+        "Risk Management",
+        "Mergers & Acquisitions",
+        "Business Development"
+      ],
+      "soft_skills": [
+        "Kepemimpinan Visioner",
+        "Komunikasi Eksekutif",
+        "Pengambilan Keputusan",
+        "Negosiasi",
+        "Manajemen Stakeholder",
+        "Ketahanan Mental"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 15 tahun pengalaman, termasuk 5 tahun di level eksekutif",
+      "salary_estimate": {
+        "minimum": 100000000,
+        "maximum": 250000000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi pasar untuk CEO perusahaan menengah di Jakarta. Gaji bervariasi signifikan berdasarkan ukuran perusahaan, sektor, dan struktur kompensasi (termasuk bonus dan saham). Validasi dengan data Mercer, Willis Towers Watson, atau laporan remunerasi direksi emiten IDX."
+    },
+    {
+      "job_title": "COO",
+      "department": "Executive Management",
+      "job_level": "Executive",
+      "job_description": "Mengawasi operasional harian perusahaan secara keseluruhan, memastikan efisiensi proses bisnis, dan menerjemahkan strategi CEO menjadi eksekusi operasional yang terukur. Bertanggung jawab atas koordinasi antar departemen operasional.",
+      "responsibilities": [
+        "Mengelola operasional harian seluruh unit bisnis dan departemen pendukung.",
+        "Menetapkan KPI operasional dan memantau pencapaiannya secara berkala.",
+        "Mengoptimalkan proses bisnis untuk meningkatkan efisiensi dan mengurangi biaya.",
+        "Mengoordinasikan jajaran manajer departemen untuk keselarasan eksekusi.",
+        "Mengawasi implementasi sistem dan teknologi operasional.",
+        "Melaporkan kinerja operasional kepada CEO dan dewan direksi.",
+        "Mengelola anggaran operasional dan memastikan penggunaan yang efektif."
+      ],
+      "qualifications": [
+        "Gelar S1/S2 di bidang Manajemen, Teknik Industri, atau Bisnis.",
+        "Pengalaman minimal 12 tahun di bidang operasional, dengan 5 tahun di posisi manajerial senior.",
+        "Pengalaman mengelola tim lintas fungsi berskala besar.",
+        "Pemahaman kuat tentang manajemen proses dan perbaikan berkelanjutan.",
+        "Kemampuan analitis dan pengambilan keputusan berbasis data."
+      ],
+      "technical_skills": [
+        "Operations Management",
+        "Process Improvement (Lean/Six Sigma)",
+        "Budgeting & Cost Control",
+        "KPI Management",
+        "ERP Systems",
+        "Supply Chain Management"
+      ],
+      "soft_skills": [
+        "Kepemimpinan Operasional",
+        "Koordinasi Lintas Fungsi",
+        "Problem Solving",
+        "Komunikasi Efektif",
+        "Manajemen Waktu",
+        "Adaptabilitas"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 12 tahun pengalaman, termasuk 5 tahun di level senior manajemen",
+      "salary_estimate": {
+        "minimum": 70000000,
+        "maximum": 150000000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi pasar untuk COO di perusahaan menengah Jakarta. Validasi dengan benchmark Mercer, Robert Walters Salary Survey Indonesia, dan data Glassdoor untuk posisi C-level."
+    },
+    {
+      "job_title": "General Manager",
+      "department": "Executive Management",
+      "job_level": "Director",
+      "job_description": "Memimpin unit bisnis atau cabang perusahaan dengan tanggung jawab penuh atas pencapaian target bisnis, pengelolaan sumber daya, dan kepatuhan operasional. Menjembatani strategi korporat dengan eksekusi di tingkat unit.",
+      "responsibilities": [
+        "Menyusun rencana bisnis unit dan memastikan pencapaian target pendapatan dan laba.",
+        "Memimpin dan mengevaluasi kinerja manajer departemen di bawahnya.",
+        "Mengelola anggaran unit dan mengendalikan biaya operasional.",
+        "Membangun hubungan dengan mitra bisnis, pelanggan kunci, dan pemangku kepentingan lokal.",
+        "Memastikan kepatuhan terhadap kebijakan perusahaan dan regulasi yang berlaku.",
+        "Melaporkan kinerja unit secara berkala kepada direksi.",
+        "Mengidentifikasi peluang pertumbuhan dan risiko bisnis di wilayah operasi."
+      ],
+      "qualifications": [
+        "Gelar S1 di bidang Manajemen, Bisnis, atau bidang terkait.",
+        "Pengalaman minimal 10 tahun dengan minimal 3 tahun di posisi manajerial senior.",
+        "Rekam jejak dalam mencapai target bisnis dan memimpin tim besar.",
+        "Pemahaman tentang pasar lokal dan dinamika industri.",
+        "Kemampuan analisis keuangan dan manajemen anggaran."
+      ],
+      "technical_skills": [
+        "Business Planning",
+        "P&L Management",
+        "Budgeting",
+        "Sales & Marketing Strategy",
+        "Performance Management",
+        "Regulatory Compliance"
+      ],
+      "soft_skills": [
+        "Kepemimpinan",
+        "Pengambilan Keputusan",
+        "Komunikasi Strategis",
+        "Negosiasi",
+        "Manajemen Konflik",
+        "Berorientasi Hasil"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 10 tahun pengalaman, termasuk 3 tahun di posisi manajerial senior",
+      "salary_estimate": {
+        "minimum": 40000000,
+        "maximum": 80000000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi untuk General Manager di perusahaan menengah-besar Jakarta. Bervariasi berdasarkan skala unit dan industri. Validasi dengan Robert Walters, Michael Page Indonesia Salary Guide."
+    },
+    {
+      "job_title": "Department Manager",
+      "department": "Executive Management",
+      "job_level": "Manager",
+      "job_description": "Memimpin satu departemen secara menyeluruh, mengelola tim, anggaran, dan proses kerja untuk mencapai tujuan departemen yang selaras dengan strategi perusahaan. Bertanggung jawab atas pengembangan tim dan efisiensi operasional departemen.",
+      "responsibilities": [
+        "Menyusun rencana kerja dan target departemen sesuai arahan direksi.",
+        "Mengelola, membina, dan mengevaluasi kinerja anggota tim departemen.",
+        "Mengawasi anggaran departemen dan memastikan efisiensi pengeluaran.",
+        "Mengembangkan SOP dan proses kerja departemen.",
+        "Berkoordinasi dengan manajer departemen lain untuk proyek lintas fungsi.",
+        "Menyusun laporan kinerja departemen secara berkala.",
+        "Mengidentifikasi kebutuhan pelatihan dan pengembangan tim."
+      ],
+      "qualifications": [
+        "Gelar S1 di bidang terkait departemen (Manajemen, Akuntansi, Teknik, dll.).",
+        "Pengalaman minimal 7 tahun dengan minimal 2 tahun di posisi supervisory.",
+        "Kemampuan memimpin dan mengembangkan tim.",
+        "Pemahaman tentang proses bisnis departemen terkait.",
+        "Kemampuan analisis dan pelaporan kinerja."
+      ],
+      "technical_skills": [
+        "Departmental Planning",
+        "Budget Management",
+        "Performance Management",
+        "SOP Development",
+        "Reporting & Analytics",
+        "Project Coordination"
+      ],
+      "soft_skills": [
+        "Kepemimpinan Tim",
+        "Komunikasi",
+        "Delegasi",
+        "Problem Solving",
+        "Manajemen Waktu",
+        "Pengambilan Keputusan"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 7 tahun pengalaman, termasuk 2 tahun di posisi supervisory",
+      "salary_estimate": {
+        "minimum": 20000000,
+        "maximum": 40000000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi untuk Department Manager di Jakarta. Bervariasi berdasarkan departemen (IT/Finance cenderung lebih tinggi). Validasi dengan Michael Page, JobStreet Salary Report, dan Glassdoor Indonesia."
+    },
+    {
+      "job_title": "Department Supervisor",
+      "department": "Executive Management",
+      "job_level": "Supervisor",
+      "job_description": "Mengawasi kegiatan harian staf dalam departemen, memastikan pekerjaan berjalan sesuai target dan standar mutu, serta menjadi penghubung antara manajer dan staf operasional.",
+      "responsibilities": [
+        "Membagi tugas harian dan memantau penyelesaian pekerjaan staf.",
+        "Memastikan kepatuhan staf terhadap SOP dan standar kualitas.",
+        "Memberikan bimbingan teknis dan menyelesaikan masalah operasional harian.",
+        "Menyusun laporan harian/mingguan aktivitas departemen kepada manajer.",
+        "Membantu manajer dalam evaluasi kinerja staf.",
+        "Mengoordinasikan jadwal kerja dan absensi tim.",
+        "Mengidentifikasi kebutuhan pelatihan bagi staf."
+      ],
+      "qualifications": [
+        "Gelar S1 atau D3 di bidang terkait.",
+        "Pengalaman minimal 4 tahun dengan minimal 1 tahun di posisi setara staf senior.",
+        "Kemampuan memimpin tim kecil (5-15 orang).",
+        "Pemahaman teknis tentang pekerjaan departemen.",
+        "Kemampuan komunikasi dan pelaporan yang baik."
+      ],
+      "technical_skills": [
+        "Task Delegation",
+        "Quality Control",
+        "SOP Implementation",
+        "Daily Reporting",
+        "Scheduling",
+        "Basic Data Analysis"
+      ],
+      "soft_skills": [
+        "Pengawasan Tim",
+        "Komunikasi",
+        "Ketelitian",
+        "Problem Solving",
+        "Keteladanan",
+        "Manajemen Waktu"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 4 tahun pengalaman, termasuk 1 tahun di posisi staf senior",
+      "salary_estimate": {
+        "minimum": 8000000,
+        "maximum": 15000000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi untuk Supervisor di Jakarta. Bervariasi berdasarkan departemen. Validasi dengan JobStreet Salary Report dan data pasar lokal."
+    },
+    {
+      "job_title": "Team Leader",
+      "department": "Executive Management",
+      "job_level": "Senior",
+      "job_description": "Memimpin tim kerja kecil dalam pelaksanaan tugas operasional atau proyek, memastikan koordinasi tim berjalan efektif dan target tim tercapai sesuai jadwal.",
+      "responsibilities": [
+        "Mengoordinasikan pembagian tugas harian tim.",
+        "Memantau progres pekerjaan dan memastikan target tim tercapai.",
+        "Menjadi penghubung antara tim dan supervisor/manajer.",
+        "Membantu anggota tim menyelesaikan kendala teknis harian.",
+        "Menyusun laporan progres pekerjaan tim.",
+        "Menjaga kekompakan dan motivasi tim.",
+        "Memberikan masukan untuk perbaikan proses kerja tim."
+      ],
+      "qualifications": [
+        "Gelar S1 atau D3 di bidang terkait, atau pengalaman setara.",
+        "Pengalaman minimal 3 tahun di bidang terkait.",
+        "Kemampuan memimpin tim kecil (3-8 orang).",
+        "Pemahaman teknis pekerjaan tim.",
+        "Kemampuan komunikasi dan koordinasi."
+      ],
+      "technical_skills": [
+        "Task Coordination",
+        "Progress Tracking",
+        "Team Reporting",
+        "Basic Technical Proficiency",
+        "Time Management"
+      ],
+      "soft_skills": [
+        "Koordinasi Tim",
+        "Komunikasi",
+        "Motivasi Tim",
+        "Problem Solving",
+        "Kolaborasi",
+        "Tanggung Jawab"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 3 tahun pengalaman di bidang terkait",
+      "salary_estimate": {
+        "minimum": 6000000,
+        "maximum": 12000000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi untuk Team Leader di Jakarta. Bervariasi berdasarkan departemen dan industri. Validasi dengan data JobStreet dan Glassdoor Indonesia."
+    },
+    {
+      "job_title": "Staff",
+      "department": "Executive Management",
+      "job_level": "Staff",
+      "job_description": "Melaksanakan tugas operasional harian sesuai arahan supervisor dan SOP departemen, memberikan kontribusi langsung terhadap kelancaran proses kerja dan pencapaian target tim.",
+      "responsibilities": [
+        "Melaksanakan tugas harian sesuai SOP dan arahan atasan.",
+        "Menyelesaikan pekerjaan sesuai target kualitas dan waktu yang ditetapkan.",
+        "Melaporkan hasil pekerjaan kepada supervisor.",
+        "Mengoperasikan peralatan atau sistem yang relevan dengan bidang kerja.",
+        "Menjaga kerapian dan ketertiban area kerja.",
+        "Mendukung rekan tim dalam penyelesaian pekerjaan.",
+        "Mengikuti pelatihan dan pengembangan kompetensi yang diberikan perusahaan."
+      ],
+      "qualifications": [
+        "Minimal SMA/SMK atau D3 di bidang terkait.",
+        "Pengalaman minimal 1 tahun di bidang serupa (fresh graduate dipersilakan melamar).",
+        "Kemampuan dasar teknis sesuai bidang kerja.",
+        "Mampu bekerja dalam tim dan mengikuti instruksi.",
+        "Teliti dan bertanggung jawab."
+      ],
+      "technical_skills": [
+        "Basic Technical Skills",
+        "MS Office",
+        "Equipment Operation",
+        "Data Entry",
+        "SOP Compliance"
+      ],
+      "soft_skills": [
+        "Kerja Sama Tim",
+        "Disiplin",
+        "Ketelitian",
+        "Komunikasi Dasar",
+        "Inisiatif",
+        "Tanggung Jawab"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 1 tahun pengalaman (fresh graduate dipersilakan)",
+      "salary_estimate": {
+        "minimum": 4500000,
+        "maximum": 7000000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi untuk posisi Staff di Jakarta sesuai UMP DKI 2024 dan data pasar entry-level. Bervariasi berdasarkan departemen dan industri. Validasi dengan JobStreet dan data BPS."
+    },
+    {
+      "job_title": "HR Manager",
+      "department": "Human Resources",
+      "job_level": "Manager",
+      "job_description": "Memimpin fungsi sumber daya manusia secara menyeluruh, mencakup rekrutmen, pengembangan karyawan, hubungan industrial, kompensasi dan benefit, serta memastikan kepatuhan terhadap regulasi ketenagakerjaan Indonesia.",
+      "responsibilities": [
+        "Menyusun dan mengimplementasikan strategi HR yang selaras dengan tujuan bisnis.",
+        "Mengawasi proses rekrutmen, seleksi, dan onboarding karyawan.",
+        "Mengelola sistem kompensasi, benefit, dan payroll.",
+        "Mengembangkan program pelatihan dan pengembangan karyawan.",
+        "Menangani hubungan industrial dan memastikan kepatuhan terhadap UU Ketenagakerjaan.",
+        "Mengelola evaluasi kinerja dan perencanaan suksesi.",
+        "Menangani permasalahan karyawan dan mediasi konflik.",
+        "Menyusun laporan HR berkala kepada direksi."
+      ],
+      "qualifications": [
+        "Gelar S1 di bidang Psikologi, Manajemen SDM, Hukum, atau terkait.",
+        "Pengalaman minimal 8 tahun di bidang HR, dengan 3 tahun di posisi manajerial.",
+        "Pemahaman mendalam tentang UU Ketenagakerjaan Indonesia dan BPJS.",
+        "Pengalaman dalam rekrutmen, payroll, dan hubungan industrial.",
+        "Kemampuan analisis data HR dan pelaporan.",
+        "Sertifikasi HR (misalnya CHRP) menjadi nilai tambah."
+      ],
+      "technical_skills": [
+        "HRIS Systems",
+        "Payroll Management",
+        "Recruitment & Selection",
+        "Industrial Relations",
+        "Employment Law Compliance",
+        "Performance Management",
+        "Compensation & Benefits"
+      ],
+      "soft_skills": [
+        "Kepemimpinan",
+        "Komunikasi",
+        "Negosiasi",
+        "Empati",
+        "Manajemen Konflik",
+        "Kerahasiaan"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 8 tahun pengalaman HR, termasuk 3 tahun di posisi manajerial",
+      "salary_estimate": {
+        "minimum": 20000000,
+        "maximum": 40000000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi untuk HR Manager di Jakarta. Validasi dengan Michael Page HR Salary Guide, Robert Walters, dan data pasar JobStreet."
+    },
+    {
+      "job_title": "HR Supervisor",
+      "department": "Human Resources",
+      "job_level": "Supervisor",
+      "job_description": "Mengawasi kegiatan operasional HR harian, termasuk administrasi karyawan, rekrutmen, dan pelatihan, serta memastikan proses HR berjalan sesuai kebijakan perusahaan.",
+      "responsibilities": [
+        "Mengawasi proses administrasi karyawan (kontrak, absensi, cuti, BPJS).",
+        "Membantu proses rekrutmen dan seleksi kandidat.",
+        "Mengoordinasikan pelaksanaan pelatihan dan onboarding karyawan.",
+        "Memantau kepatuhan proses HR terhadap regulasi ketenagakerjaan.",
+        "Membantu penyusunan laporan HR bulanan.",
+        "Mengawasi staf HR dalam pekerjaan harian.",
+        "Menangani pertanyaan karyawan terkait kebijakan HR."
+      ],
+      "qualifications": [
+        "Gelar S1 di bidang Psikologi, Manajemen SDM, atau terkait.",
+        "Pengalaman minimal 5 tahun di bidang HR, dengan 1 tahun di posisi supervisory.",
+        "Pemahaman tentang UU Ketenagakerjaan dan BPJS.",
+        "Pengalaman dalam administrasi HR dan rekrutmen.",
+        "Kemampuan komunikasi dan koordinasi."
+      ],
+      "technical_skills": [
+        "HR Administration",
+        "Recruitment Coordination",
+        "BPJS Management",
+        "Attendance Systems",
+        "Training Coordination",
+        "HR Reporting"
+      ],
+      "soft_skills": [
+        "Pengawasan",
+        "Komunikasi",
+        "Ketelitian",
+        "Empati",
+        "Koordinasi",
+        "Kerahasiaan"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 5 tahun pengalaman HR, termasuk 1 tahun supervisory",
+      "salary_estimate": {
+        "minimum": 10000000,
+        "maximum": 18000000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi untuk HR Supervisor di Jakarta. Validasi dengan JobStreet, Glassdoor, dan data pasar lokal."
+    },
+    {
+      "job_title": "HR Generalist",
+      "department": "Human Resources",
+      "job_level": "Staff",
+      "job_description": "Menangani berbagai fungsi HR secara umum, termasuk administrasi karyawan, rekrutmen, pelatihan, dan dukungan operasional HR, menjadi titik kontak pertama untuk pertanyaan karyawan.",
+      "responsibilities": [
+        "Mengelola administrasi karyawan termasuk kontrak, absensi, dan cuti.",
+        "Membantu proses rekrutmen dari penyaringan hingga penjadwalan wawancara.",
+        "Mendukung pelaksanaan program pelatihan dan pengembangan.",
+        "Membantu proses onboarding karyawan baru.",
+        "Memelihara database karyawan dan dokumen HR.",
+        "Menangani pertanyaan karyawan terkait kebijakan dan benefit.",
+        "Membantu penyusunan laporan HR bulanan."
+      ],
+      "qualifications": [
+        "Gelar S1 di bidang Psikologi, Manajemen SDM, atau terkait.",
+        "Pengalaman minimal 2 tahun di bidang HR umum.",
+        "Pemahaman dasar tentang UU Ketenagakerjaan dan BPJS.",
+        "Kemampuan administrasi dan organisasi yang baik.",
+        "Menguasai MS Office dan HRIS dasar."
+      ],
+      "technical_skills": [
+        "HR Administration",
+        "Recruitment Support",
+        "HRIS",
+        "MS Office",
+        "BPJS Processing",
+        "Document Management"
+      ],
+      "soft_skills": [
+        "Komunikasi",
+        "Ketelitian",
+        "Empati",
+        "Kerja Sama Tim",
+        "Manajemen Waktu",
+        "Kerahasiaan"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 2 tahun pengalaman di bidang HR umum",
+      "salary_estimate": {
+        "minimum": 6000000,
+        "maximum": 10000000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi untuk HR Generalist di Jakarta. Validasi dengan JobStreet dan data pasar entry-mid level."
+    },
+    {
+      "job_title": "Recruiter",
+      "department": "Human Resources",
+      "job_level": "Staff",
+      "job_description": "Bertanggung jawab atas proses rekrutmen end-to-end, mulai dari penyusunan iklan lowongan, penyaringan kandidat, wawancara awal, hingga penempatan karyawan baru sesuai kebutuhan departemen.",
+      "responsibilities": [
+        "Menyusun dan mempublikasikan iklan lowongan kerja di berbagai kanal.",
+        "Menyaring CV dan melakukan wawancara awal kandidat.",
+        "Mengoordinasikan jadwal wawancara dengan manajer departemen.",
+        "Melakukan verifikasi referensi dan background check kandidat.",
+        "Mengelola database kandidat dan pipeline rekrutmen.",
+        "Menyusun laporan rekrutmen bulanan.",
+        "Membangun jaringan sumber kandidat (job fair, kampus, media sosial)."
+      ],
+      "qualifications": [
+        "Gelar S1 di bidang Psikologi, Manajemen SDM, atau terkait.",
+        "Pengalaman minimal 2 tahun di bidang rekrutmen.",
+        "Pemahaman tentang teknik wawancara berbasis kompetensi.",
+        "Kemampuan menggunakan job portal dan LinkedIn.",
+        "Kemampuan komunikasi dan penilaian kandidat yang baik."
+      ],
+      "technical_skills": [
+        "Sourcing Techniques",
+        "ATS (Applicant Tracking System)",
+        "Competency-Based Interviewing",
+        "LinkedIn Recruiter",
+        "Job Portal Management",
+        "Candidate Assessment"
+      ],
+      "soft_skills": [
+        "Komunikasi",
+        "Penilaian Karakter",
+        "Negosiasi",
+        "Empati",
+        "Manajemen Waktu",
+        "Jaringan"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 2 tahun pengalaman di bidang rekrutmen",
+      "salary_estimate": {
+        "minimum": 6000000,
+        "maximum": 11000000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi untuk Recruiter di Jakarta. Validasi dengan JobStreet, Glassdoor, dan data pasar HR."
+    },
+    {
+      "job_title": "Payroll Staff",
+      "department": "Human Resources",
+      "job_level": "Staff",
+      "job_description": "Mengelola proses penggajian karyawan secara akurat dan tepat waktu, termasuk perhitungan gaji, potongan, BPJS, pajak, dan penyusunan laporan payroll.",
+      "responsibilities": [
+        "Menghitung gaji karyawan berdasarkan absensi, lembur, dan komponen lainnya.",
+        "Mengelola potongan BPJS Kesehatan, BPJS Ketenagakerjaan, dan PPh 21.",
+        "Menyusun slip gaji dan melakukan transfer gaji tepat waktu.",
+        "Memelihara data payroll karyawan di sistem.",
+        "Menyusun laporan payroll bulanan untuk manajemen.",
+        "Menangani pertanyaan karyawan terkait gaji dan potongan.",
+        "Membantu proses rekonsiliasi data payroll."
+      ],
+      "qualifications": [
+        "Gelar D3/S1 di bidang Akuntansi, Manajemen, atau terkait.",
+        "Pengalaman minimal 1-2 tahun di bidang payroll.",
+        "Pemahaman tentang perhitungan PPh 21 dan BPJS.",
+        "Kemampuan menggunakan software payroll dan MS Excel.",
+        "Ketelitian tinggi dalam perhitungan angka."
+      ],
+      "technical_skills": [
+        "Payroll Software",
+        "PPh 21 Calculation",
+        "BPJS Processing",
+        "MS Excel (Advanced)",
+        "Accounting Basics",
+        "Data Reconciliation"
+      ],
+      "soft_skills": [
+        "Ketelitian",
+        "Kerahasiaan",
+        "Disiplin",
+        "Tanggung Jawab",
+        "Komunikasi",
+        "Manajemen Waktu"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 1-2 tahun pengalaman di bidang payroll",
+      "salary_estimate": {
+        "minimum": 5000000,
+        "maximum": 8500000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi untuk Payroll Staff di Jakarta. Validasi dengan JobStreet dan data pasar finance/HR."
+    },
+    {
+      "job_title": "HR Administrator",
+      "department": "Human Resources",
+      "job_level": "Staff",
+      "job_description": "Menangani administrasi dokumen dan data karyawan, termasuk pengelolaan arsip, pembaruan database, dan dukungan administratif untuk fungsi HR sehari-hari.",
+      "responsibilities": [
+        "Mengelola arsip dokumen karyawan (kontrak, ijazah, sertifikat).",
+        "Memperbarui database karyawan secara berkala.",
+        "Memproses administrasi cuti, izin, dan absensi.",
+        "Membantu proses pendaftaran BPJS karyawan baru.",
+        "Menyiapkan dokumen HR untuk keperluan audit atau pelaporan.",
+        "Mendukung proses onboarding dan offboarding administratif.",
+        "Menangani korespondensi HR dengan pihak eksternal."
+      ],
+      "qualifications": [
+        "Minimal D3 di bidang Administrasi, Manajemen, atau terkait.",
+        "Pengalaman minimal 1 tahun di bidang administrasi (fresh graduate dipersilakan).",
+        "Kemampuan administrasi dan pengarsipan yang baik.",
+        "Menguasai MS Office (Excel, Word).",
+        "Teliti dan terorganisir."
+      ],
+      "technical_skills": [
+        "Document Management",
+        "Data Entry",
+        "MS Office",
+        "Filing Systems",
+        "HRIS Basic",
+        "BPJS Administration"
+      ],
+      "soft_skills": [
+        "Ketelitian",
+        "Kerapian",
+        "Disiplin",
+        "Komunikasi",
+        "Kerahasiaan",
+        "Manajemen Waktu"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 1 tahun pengalaman administrasi (fresh graduate dipersilakan)",
+      "salary_estimate": {
+        "minimum": 4500000,
+        "maximum": 7000000,
+        "period": "monthly"
+      },
+      "salary_source_notes": "Estimasi untuk HR Administrator di Jakarta sesuai UMP DKI 2024. Validasi dengan JobStreet dan data pasar entry-level."
+    }
+  ]
+}

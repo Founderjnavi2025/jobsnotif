@@ -1,0 +1,108 @@
+{
+  "version": "1.0",
+  "source": "job_description_dataset.json",
+  "total_positions": 41,
+  "total_categories": 6,
+  "all_categories_option": {
+    "value": "all",
+    "label": "Semua Kategori",
+    "description": "Menerima notifikasi dari seluruh kategori pekerjaan."
+  },
+  "categories": [
+    {
+      "id": "general-affairs",
+      "name": "General Affairs & Operasional Umum",
+      "department": "General Affairs",
+      "description": "Administrasi umum, keamanan, kebersihan, fasilitas, dan operasional kantor.",
+      "position_count": 8,
+      "job_titles": [
+        "Cleaning Coordinator",
+        "Cleaning Staff",
+        "Driver",
+        "GA Manager",
+        "GA Supervisor",
+        "Office Assistant",
+        "Security Coordinator",
+        "Security Guard"
+      ]
+    },
+    {
+      "id": "human-resources",
+      "name": "Human Resources (HR)",
+      "department": "Human Resources",
+      "description": "Rekrutmen, pengelolaan SDM, administrasi karyawan, dan penggajian.",
+      "position_count": 6,
+      "job_titles": [
+        "HR Administrator",
+        "HR Generalist",
+        "HR Manager",
+        "HR Supervisor",
+        "Payroll Staff",
+        "Recruiter"
+      ]
+    },
+    {
+      "id": "it-technology",
+      "name": "IT & Teknologi",
+      "department": "IT & Technology",
+      "description": "Teknologi informasi, pengembangan perangkat lunak, dan dukungan sistem.",
+      "position_count": 7,
+      "job_titles": [
+        "Backend Developer",
+        "Field Technician",
+        "Frontend Developer",
+        "IT Manager",
+        "IT Supervisor",
+        "IT Support",
+        "System Administrator"
+      ]
+    },
+    {
+      "id": "finance-accounting",
+      "name": "Keuangan & Akuntansi",
+      "department": "Finance & Accounting",
+      "description": "Keuangan, akuntansi, perpajakan, dan pengelolaan anggaran.",
+      "position_count": 6,
+      "job_titles": [
+        "Accountant",
+        "Cashier",
+        "Finance Manager",
+        "Finance Staff",
+        "Finance Supervisor",
+        "Tax Staff"
+      ]
+    },
+    {
+      "id": "executive-management",
+      "name": "Manajemen & Eksekutif",
+      "department": "Executive Management",
+      "description": "Kepemimpinan, manajemen perusahaan, dan pengelolaan strategi bisnis.",
+      "position_count": 7,
+      "job_titles": [
+        "CEO",
+        "COO",
+        "Department Manager",
+        "Department Supervisor",
+        "General Manager",
+        "Staff",
+        "Team Leader"
+      ]
+    },
+    {
+      "id": "marketing",
+      "name": "Marketing & Penjualan",
+      "department": "Marketing",
+      "description": "Pemasaran, penjualan, promosi, dan pengembangan bisnis.",
+      "position_count": 7,
+      "job_titles": [
+        "Content Creator",
+        "Digital Marketer",
+        "Field Sales",
+        "Graphic Designer",
+        "Marketing Manager",
+        "Marketing Supervisor",
+        "Sales Executive"
+      ]
+    }
+  ]
+}

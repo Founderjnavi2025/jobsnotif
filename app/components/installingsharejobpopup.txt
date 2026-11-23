@@ -1,0 +1,21 @@
+"use client";
+
+import { useState } from "react";
+import ShareJobPopup from "@/app/components/ShareJobPopup";
+
+// Di dalam component:
+const [shareOpen, setShareOpen] = useState(false);
+
+// Tombol pemanggil:
+<button onClick={() => setShareOpen(true)}>
+  Share Your Job
+</button>
+
+// Popup:
+<ShareJobPopup
+  open={shareOpen}
+  onClose={() => setShareOpen(false)}
+  onPurchase={(count) => {
+    console.log("Purchase:", count);
+  }}
+/>

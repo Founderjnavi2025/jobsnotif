@@ -1,0 +1,70 @@
+{
+  "publication_id": "fasthire-VZD4-E4JT-MEZN-7X42",
+  "published_at": "2026-11-21T16:56:48.974372+00:00",
+  "title": "CEO",
+  "category": "Executive Management",
+  "company": {
+    "company_name": "arum jeram",
+    "address": "sesuaikan",
+    "recruitment_email": "saras008@gmail.com",
+    "recruitment_website": "http://127.0.0.1:5000/studio/profile",
+    "whatsapp": "08999999"
+  },
+  "vacancy": {
+    "company_name": "arum jeram",
+    "address": "sesuaikan",
+    "recruitment_email": "saras008@gmail.com",
+    "recruitment_website": "http://127.0.0.1:5000/studio/profile",
+    "whatsapp": "08999999",
+    "published": true,
+    "access_code": "fasthire-VZD4-E4JT-MEZN-7X42",
+    "type": "position",
+    "job_details": {
+      "job_title": "CEO",
+      "department": "Executive Management",
+      "job_level": "Executive",
+      "job_description": "Memimpin dan mengarahkan seluruh strategi bisnis perusahaan, memastikan pertumbuhan yang berkelanjutan, serta mewakili perusahaan di hadapan pemegang saham, mitra strategis, dan regulator. Bertanggung jawab atas kinerja keseluruhan organisasi dan pengambilan keputusan strategis tingkat tertinggi.",
+      "responsibilities": [
+        "Merumuskan dan mengeksekusi visi, misi, dan strategi jangka panjang perusahaan.",
+        "Memimpin rapat dewan direksi dan melaporkan kinerja perusahaan kepada pemegang saham.",
+        "Menetapkan target kinerja tahunan dan memastikan pencapaian seluruh unit bisnis.",
+        "Mengambil keputusan final atas investasi, ekspansi, dan kemitraan strategis.",
+        "Membangun budaya organisasi dan memastikan tata kelola perusahaan yang baik (GCG).",
+        "Merekrut, membina, dan mengevaluasi jajaran direksi dan manajer senior.",
+        "Mewakili perusahaan dalam hubungan dengan regulator, investor, dan media.",
+        "Mengawasi pengelolaan risiko perusahaan dan kepatuhan terhadap regulasi."
+      ],
+      "qualifications": [
+        "Gelar S1/S2 di bidang Bisnis, Manajemen, Ekonomi, atau Teknik.",
+        "Pengalaman minimal 15 tahun di posisi manajemen senior, dengan 5 tahun di level C-suite.",
+        "Rekam jejak terbukti dalam memimpin pertumbuhan bisnis dan transformasi organisasi.",
+        "Pemahaman mendalam tentang pasar Indonesia dan regulasi bisnis lokal.",
+        "Kemampuan analisis keuangan dan pengambilan keputusan strategis yang kuat.",
+        "Jaringan profesional yang luas di industri terkait."
+      ],
+      "technical_skills": [
+        "Strategic Planning",
+        "Financial Modeling & Analysis",
+        "Corporate Governance",
+        "Risk Management",
+        "Mergers & Acquisitions",
+        "Business Development"
+      ],
+      "soft_skills": [
+        "Kepemimpinan Visioner",
+        "Komunikasi Eksekutif",
+        "Pengambilan Keputusan",
+        "Negosiasi",
+        "Manajemen Stakeholder",
+        "Ketahanan Mental"
+      ],
+      "employment_type": "Full-time",
+      "experience_level": "Minimal 15 tahun pengalaman, termasuk 5 tahun di level eksekutif",
+      "salary_estimate": {
+        "minimum": 100000000,
+        "maximum": 250000000,
+        "period": "monthly"
+      }
+    }
+  }
+}

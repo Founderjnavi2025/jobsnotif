@@ -27,6 +27,19 @@ export default function BusinessProfilePage() {
   const [jobs, setJobs] = useState<JobArchive[]>([]);
   const [jobsLoading, setJobsLoading] = useState(true);
 
+  async function handleLogout() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      setNotice(`Logout failed: ${error.message}`);
+      return;
+    }
+
+    router.replace("/login");
+    router.refresh();
+  }
+
+
   useEffect(() => {
     async function loadBusiness() {
       const { data, error } = await supabase.auth.getUser();
@@ -115,6 +128,22 @@ export default function BusinessProfilePage() {
           <div>
             <span style={{ fontSize: 11, letterSpacing: 1, color: "#888" }}>COMPANY INFORMATION</span>
             <h2 style={{ fontSize: 24, margin: "6px 0" }}>Your Business Profile</h2>
+            <button
+              type="button"
+              onClick={handleLogout}
+              style={{
+                marginTop: 12,
+                padding: "9px 16px",
+                borderRadius: 10,
+                border: "1px solid #fecaca",
+                background: "#fff",
+                color: "#dc2626",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              Logout
+            </button>
             <p style={{ color: "#666", margin: 0 }}>Manage the identity candidates see about your company.</p>
           </div>
           <button type="button" onClick={editing ? cancelEditor : openEditor} style={{ padding: "10px 18px", borderRadius: 999, background: "#111", color: "#fff", border: "none", cursor: "pointer", whiteSpace: "nowrap" }}>

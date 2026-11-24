@@ -4996,3 +4996,49 @@ button { font: inherit; cursor: pointer; }
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* ===== JOBS LIST ===== */
+.jobs-page { min-height: 100vh; padding-bottom: 48px; color: var(--navy); }
+.jobs-header { max-width: 1000px; padding: 14px 16px; }
+.jobs-brand-icon { width: 42px; height: 42px; border-radius: 12px; font-size: 22px; }
+.jobs-header .brand { font-size: 24px; }
+.jobs-nav { max-width: 1000px; margin: auto; padding: 6px 16px; display: flex; gap: 6px; overflow-x: auto; }
+.jobs-nav .nav-link { white-space: nowrap; text-decoration: none; }
+.jobs-intro { max-width: 1000px; margin: auto; padding: 28px 16px 0; }
+.jobs-title { margin: 14px 0 10px; color: var(--navy); font-size: 42px; font-weight: 900; line-height: 1.05; letter-spacing: -1px; }
+.jobs-title span { color: var(--blue); }
+.jobs-description { max-width: 520px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
+.jobs-search { display: flex; gap: 8px; margin-top: 18px; padding: 6px; border: 1px solid var(--line); border-radius: 16px; background: white; box-shadow: 0 4px 20px #0a254014; }
+.jobs-search input { flex: 1; min-width: 0; padding: 12px; border: 0; outline: 0; background: white; color: var(--navy); font: inherit; font-size: 14px; }
+.jobs-search button { white-space: nowrap; border: 0; border-radius: 12px; }
+.jobs-departments { display: flex; gap: 8px; overflow-x: auto; margin-top: 14px; padding-bottom: 4px; }
+.jobs-dept { white-space: nowrap; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: #f1f5f9; color: var(--navy); text-decoration: none; font-size: 12px; font-weight: 700; }
+.jobs-dept.selected { background: var(--navy); color: white; }
+.jobs-result-count { display: flex; align-items: center; gap: 8px; margin-top: 18px; color: var(--muted); font-size: 13px; }
+.jobs-result-count > span, .jobs-page .eyebrow > span { width: 9px; height: 9px; border-radius: 50%; background: #22c55e; }
+.jobs-results { max-width: 1000px; margin: auto; padding: 24px 16px; }
+.jobs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.jobs-card { display: block; padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: white; box-shadow: 0 2px 12px #0a25400a; color: var(--navy); text-decoration: none; }
+.jobs-card:hover { border-color: #9bc8f5; box-shadow: 0 7px 20px #173c6812; }
+.jobs-card-top { display: flex; justify-content: space-between; align-items: center; }
+.jobs-symbol { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: #eef5ff; color: var(--blue); font-size: 20px; font-weight: 900; }
+.jobs-employment { padding: 5px 10px; border-radius: 20px; background: #f1f5f9; color: var(--navy); font-size: 11px; font-weight: 700; }
+.jobs-meta { margin-top: 12px; color: var(--blue); font-size: 11px; font-weight: 800; }
+.jobs-card h3 { margin: 6px 0; color: var(--navy); font-size: 17px; line-height: 1.3; }
+.jobs-card-description { height: 60px; overflow: hidden; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.jobs-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.jobs-skills span { padding: 4px 8px; border: 1px solid var(--line); border-radius: 999px; background: #f8fafc; color: var(--navy); font-size: 11px; }
+.jobs-salary { margin-top: 14px; color: var(--navy); font-size: 14px; font-weight: 900; }
+.jobs-salary span { margin-left: 4px; color: var(--muted); font-size: 11px; font-weight: 400; }
+.jobs-detail-button { margin-top: 12px; padding: 11px; border-radius: 12px; background: var(--blue); color: white; text-align: center; font-size: 13px; font-weight: 800; }
+.jobs-pagination { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; margin-top: 24px; }
+.jobs-page-link { padding: 10px 16px; border: 1px solid var(--line); border-radius: 12px; background: #f1f5f9; color: var(--navy); text-decoration: none; font-size: 13px; font-weight: 800; }
+.jobs-page-link.current, .jobs-page-link.next { border-color: var(--blue); background: var(--blue); color: white; }
+.jobs-page-info { margin-top: 10px; color: var(--muted); text-align: center; font-size: 12px; }
+.jobs-loading { padding: 40px; text-align: center; }
+@media(max-width:600px) {
+  .jobs-header { padding: 14px 17px; }
+  .jobs-header .brand { font-size: 20px; }
+  .jobs-title { font-size: 38px; }
+  .jobs-search button { padding: 10px 12px; font-size: 11px; }
+}

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import dataset from "../../../data/job_description_dataset.json";
 import { supabase } from "../../../lib/supabase";
@@ -21,6 +22,7 @@ function generateJobToken() {
 }
 
 export default function CreateJobPage() {
+  const router = useRouter();
   const [notice, setNotice] = useState("");
   const [saving, setSaving] = useState(false);
   const [publishedToken, setPublishedToken] = useState("");
@@ -161,7 +163,8 @@ export default function CreateJobPage() {
       }
 
       setPublishedToken(savedToken);
-      setNotice("Your job vacancy has been successfully published and saved.");
+      setNotice("Your job vacancy has been successfully published. Opening Manager...");
+      router.push(`/manager/${encodeURIComponent(savedToken)}`);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Failed to publish job vacancy.");
     } finally {

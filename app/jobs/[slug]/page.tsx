@@ -52,8 +52,11 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
             boxShadow:"0 5px 0 #0A2540"
           }}
         >
-          Cari & Atur Minat Pekerjaan →
+          Dapatkan Loker Seperti Ini di Telegram →
         </Link>
+        <div style={{textAlign:"center",fontSize:12,color:"#64748B",marginTop:10}}>
+          Gratis. Tanpa spam. Berhenti kapan saja.
+        </div>
       </div>
       {related.length>0&&(<div style={{marginTop:20}}><div style={{fontWeight:900,fontSize:16,margin:"6px 0 12px",color:NAVY}}>Loker Se-departemen Lainnya</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:12}}>{related.map((r:any,i:number)=>(<Link key={i} href={`/jobs/${slugify(r.job_title)}`} style={{background:"white",border:"1px solid #E2E8F0",borderRadius:16,padding:14,textDecoration:"none",color:NAVY,display:"block"}}><div style={{fontSize:11,color:BLUE,fontWeight:800}}>{r.department}</div><div style={{fontWeight:800,margin:"6px 0",fontSize:15}}>{r.job_title}</div><div style={{fontSize:13,fontWeight:700}}>Rp {((r.salary_estimate?.minimum||0)/1000000).toFixed(1)} Jt - Rp {((r.salary_estimate?.maximum||0)/1000000).toFixed(1)} Jt</div></Link>))}</div></div>)}
     </div>

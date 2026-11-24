@@ -95,13 +95,9 @@ export default function LoginPage() {
 
             <div className="password-label">
               <label htmlFor="password">Password</label>
-              <button
-                type="button"
-                className="forgot-button"
-                onClick={() => setNotice("Password recovery will be available when authentication is connected.")}
-              >
+              <Link href="/forgot-password" className="forgot-button">
                 Forgot password?
-              </button>
+              </Link>
             </div>
 
             <div className="login-input-wrap">

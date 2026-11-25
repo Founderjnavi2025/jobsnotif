@@ -13,6 +13,7 @@ function JobDetailContent() {
   const [welcome, setWelcome] = useState(true);
   const [file, setFile] = useState<File | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
   function goToApply() {
@@ -38,7 +39,7 @@ function JobDetailContent() {
     setFile(selected);
   }
 
-  function submitApplication(e: React.FormEvent<HTMLFormElement>) {
+  async function submitApplication(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!file) {
@@ -47,8 +48,42 @@ function JobDetailContent() {
     }
 
     setError("");
-    setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setUploading(true);
+
+    try {
+      const storageKey = "jobsnotif_browser_upload_key";
+      let browserKey = localStorage.getItem(storageKey);
+
+      if (!browserKey) {
+        browserKey = crypto.randomUUID().replace(/-/g, "");
+        localStorage.setItem(storageKey, browserKey);
+      }
+
+      const formData = new FormData();
+      formData.append("token", token);
+      formData.append("browser_key", browserKey);
+      formData.append("cv", file);
+
+      const response = await fetch("/api/applications", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(result.error || "Failed to submit application.");
+        return;
+      }
+
+      setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      console.error("Submit application error:", err);
+      setError("Connection failed. Please try again.");
+    } finally {
+      setUploading(false);
+    }
   }
 
   if (submitted) {
@@ -178,8 +213,13 @@ function JobDetailContent() {
 
             {error && <p className="job-detail-error">{error}</p>}
 
-            <button type="submit" className="job-detail-submit">
-              Submit Application <span>→</span>
+            <button
+              type="submit"
+              className="job-detail-submit"
+              disabled={uploading}
+            >
+              {uploading ? "Uploading CV..." : "Submit Application"}
+              {!uploading && <span> →</span>}
             </button>
           </form>
 

@@ -18,7 +18,7 @@ function generateJobToken() {
   const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   const bytes = crypto.getRandomValues(new Uint8Array(12));
   const value = Array.from(bytes, (b) => alphabet[b % alphabet.length]).join("");
-  return `jobanotif-${value.slice(0, 4)}-${value.slice(4, 8)}-${value.slice(8, 12)}`;
+  return `jobsnotif-${value.slice(0, 4)}-${value.slice(4, 8)}-${value.slice(8, 12)}`;
 }
 
 export default function CreateJobPage() {

@@ -15,6 +15,7 @@ function JobDetailContent() {
   const [submitted, setSubmitted] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  const [debugTxt, setDebugTxt] = useState("");
 
   function goToApply() {
     setWelcome(false);
@@ -50,6 +51,12 @@ function JobDetailContent() {
     setError("");
     setUploading(true);
 
+    let debugLines = "";
+    debugLines += `===== SUBMIT ${new Date().toISOString()} =====\n`;
+    debugLines += `endpoint: /api/applications\n`;
+    debugLines += `file_name: ${file?.name}\n`;
+    debugLines += `file_size: ${file?.size}\n`;
+
     try {
       const storageKey = "jobsnotif_browser_upload_key";
       let browserKey = localStorage.getItem(storageKey);
@@ -71,6 +78,14 @@ function JobDetailContent() {
 
       const result = await response.json();
 
+      debugLines += `http_status: ${response.status} ok=${response.ok}\n`;
+      debugLines += `response_body: ${JSON.stringify(result).slice(0, 2000)}\n`;
+      debugLines += `has_application_id: ${!!result?.application_id}\n`;
+      debugLines += `application_id: ${result?.application_id || "TIDAK ADA"}\n`;
+
+      setDebugTxt(debugLines);
+      console.log(debugLines);
+
       if (!response.ok) {
         setError(result.error || "Failed to submit application.");
         return;
@@ -78,12 +93,30 @@ function JobDetailContent() {
 
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch (err) {
+    } catch (err: any) {
+      debugLines += `FETCH_ERROR: ${err?.message}\n`;
+      setDebugTxt(debugLines);
+      console.log(debugLines);
+
       console.error("Submit application error:", err);
       setError("Connection failed. Please try again.");
     } finally {
       setUploading(false);
     }
+  }
+
+  function downloadDebug() {
+    if (!debugTxt) return;
+
+    const blob = new Blob([debugTxt], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = "frontend-debug.txt";
+    a.click();
+
+    URL.revokeObjectURL(url);
   }
 
   if (submitted) {
@@ -103,6 +136,21 @@ function JobDetailContent() {
           <Link href="/auto-find-jobs" className="job-detail-back">
             Back to JobsNotif
           </Link>
+
+          {debugTxt && (
+            <button
+              type="button"
+              onClick={downloadDebug}
+              style={{
+                marginTop: 12,
+                fontSize: 12,
+                textDecoration: "underline",
+                opacity: 0.7,
+              }}
+            >
+              Download Debug TXT
+            </button>
+          )}
         </div>
       </main>
     );
@@ -222,6 +270,21 @@ function JobDetailContent() {
               {!uploading && <span> →</span>}
             </button>
           </form>
+
+          {debugTxt && (
+            <button
+              type="button"
+              onClick={downloadDebug}
+              style={{
+                marginTop: 12,
+                fontSize: 12,
+                textDecoration: "underline",
+                opacity: 0.7,
+              }}
+            >
+              Download Debug TXT
+            </button>
+          )}
 
           <p className="job-detail-privacy">
             Your CV will be provided to the recruiting company.

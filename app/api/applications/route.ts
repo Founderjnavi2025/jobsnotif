@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
-export const runtime = "nodejs";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 

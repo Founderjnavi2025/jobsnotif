@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
-export const runtime = "nodejs";
 
 const INTERVAL_MS = 20_000;
 const BATCH_LIMIT = 5;

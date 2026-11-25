@@ -1,0 +1,5 @@
+[
+  {"id":1,"name":"Budi Santoso","tele_id":"123456789","tele_user":"@budis","wa":"628123456789","status":"Sudah Ambil Kunci","applied":"Travel Consultant","last_active":"2026-11-24 20:10","bot_status":"Bot kirim notif 3 loker"},
+  {"id":2,"name":"Siti Aminah","tele_id":"987654321","tele_user":"@sitiaminah","wa":"628987654321","status":"Belum Ambil Kunci","applied":"-","last_active":"2026-11-24 19:55","bot_status":"Bot nunggu user klik /start"},
+  {"id":3,"name":"Andi Pratama","tele_id":"555666777","tele_user":"@andipratama","wa":"628555666777","status":"Sudah Ambil Kunci","applied":"Customer Service","last_active":"2026-11-24 20:30","bot_status":"Bot kirim CV ke perusahaan"}
+]

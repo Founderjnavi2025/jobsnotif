@@ -1,9 +1,91 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import pdfParse from "pdf-parse";
+
 
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+async function extractCVData(buffer: Buffer) {
+  try {
+    const parsed = await pdfParse(buffer);
+    const text = (parsed.text || "")
+      .replace(/\r/g, "\n")
+      .replace(/[ \t]+/g, " ")
+      .trim();
+
+    const lines = text
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    const data: Record<string, string> = {
+      full_text: text,
+    };
+
+    // Ambil informasi dari label yang umum dipakai di CV.
+    const labels: Record<string, RegExp[]> = {
+      name: [
+        /^(?:nama lengkap|nama|full name|candidate name)\s*[:\-]\s*(.+)$/i,
+      ],
+      whatsapp: [
+        /^(?:whatsapp|no\.?\s*(?:hp|handphone)|nomor\s*(?:hp|telepon)|phone|mobile|telephone)\s*[:\-]\s*(.+)$/i,
+      ],
+      email: [
+        /^(?:email|e-mail|alamat email)\s*[:\-]\s*(.+)$/i,
+      ],
+      education: [
+        /^(?:pendidikan|education|educational background)\s*[:\-]\s*(.+)$/i,
+      ],
+      experience: [
+        /^(?:pengalaman kerja|pengalaman|work experience|professional experience)\s*[:\-]\s*(.+)$/i,
+      ],
+      skills: [
+        /^(?:keahlian|skill|skills|kompetensi)\s*[:\-]\s*(.+)$/i,
+      ],
+      address: [
+        /^(?:alamat|address|domisili)\s*[:\-]\s*(.+)$/i,
+      ],
+    };
+
+    for (const line of lines) {
+      for (const [key, patterns] of Object.entries(labels)) {
+        if (data[key]) continue;
+
+        for (const pattern of patterns) {
+          const match = line.match(pattern);
+          if (match?.[1]) {
+            data[key] = match[1].trim();
+            break;
+          }
+        }
+      }
+    }
+
+    // Cari email jika tidak berada pada baris berlabel.
+    if (!data.email) {
+      const email = text.match(
+        /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i
+      );
+      if (email) data.email = email[0];
+    }
+
+    // Cari nomor telepon Indonesia jika tidak berlabel.
+    if (!data.whatsapp) {
+      const phone = text.match(
+        /(?:\+?62|0)8[\d\s().-]{7,16}\d/
+      );
+      if (phone) data.whatsapp = phone[0].trim();
+    }
+
+    return data;
+  } catch (error) {
+    console.error("CV PDF parsing failed:", error);
+    return {};
+  }
+}
+
 
 export async function POST(request: Request) {
   try {
@@ -109,6 +191,7 @@ export async function POST(request: Request) {
 
     const cvPath = `${job.id}/${randomUUID()}-${filename}`;
     const buffer = Buffer.from(await file.arrayBuffer());
+    const parsedCV = await extractCVData(buffer);
 
     // Simpan PDF ke Supabase Storage
     const { error: uploadError } = await supabaseAdmin.storage
@@ -137,6 +220,9 @@ export async function POST(request: Request) {
           cv_path: cvPath,
           cv_filename: filename,
           browser_key: browserKey,
+          applicant_name: parsedCV.name || null,
+          applicant_whatsapp: parsedCV.whatsapp || null,
+          cv_parsed_data: parsedCV,
         })
         .select("id")
         .single();

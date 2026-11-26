@@ -4,7 +4,7 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export async function GET(
   request: Request,
-  context: { params: Promise<{ token: string }> }
+  context: { params: Promise<{ token: string }> },
 ) {
   try {
     const authorization = request.headers.get("authorization") || "";
@@ -50,27 +50,29 @@ export async function GET(
 
     if (jobError) {
       console.error("Manager job lookup:", jobError.message);
-      return NextResponse.json({ error: "Failed to load vacancy" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to load vacancy" },
+        { status: 500 },
+      );
     }
 
     if (!job) {
       return NextResponse.json({ error: "Vacancy not found" }, { status: 404 });
     }
 
-    const { data: applications, error: applicationError } =
-      await supabaseAdmin
-        .from("job_applications")
-        .select(
-          "id, applicant_name, applicant_whatsapp, cv_filename, cv_path, cv_extraction_status, created_at"
-        )
-        .eq("job_id", job.id)
-        .order("created_at", { ascending: false });
+    const { data: applications, error: applicationError } = await supabaseAdmin
+      .from("job_applications")
+      .select(
+        "id, applicant_name, applicant_whatsapp, cv_filename, cv_path, cv_parsed_data, created_at",
+      )
+      .eq("job_id", job.id)
+      .order("created_at", { ascending: false });
 
     if (applicationError) {
       console.error("Manager applications:", applicationError.message);
       return NextResponse.json(
         { error: "Failed to load applications" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -93,7 +95,7 @@ export async function GET(
           ...application,
           cv_url: cvUrl,
         };
-      })
+      }),
     );
 
     return NextResponse.json({
@@ -103,6 +105,9 @@ export async function GET(
     });
   } catch (error) {
     console.error("Manager applications API:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
   }
 }

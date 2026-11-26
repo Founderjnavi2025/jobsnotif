@@ -19,7 +19,16 @@ type Application = {
   applicant_name: string | null;
   applicant_whatsapp: string | null;
   cv_filename: string | null;
-  cv_extraction_status: string | null;
+  cv_parsed_data: {
+    name?: string;
+    whatsapp?: string;
+    email?: string;
+    education?: string;
+    experience?: string;
+    skills?: string;
+    address?: string;
+    full_text?: string;
+  } | null;
   created_at: string;
   cv_url: string | null;
 };
@@ -69,7 +78,7 @@ function ManagerTokenPageContent() {
         setError(`Failed to load vacancy: ${jobError.message}`);
       } else if (!data) {
         setError(
-          "Vacancy not found or you do not have permission to access it."
+          "Vacancy not found or you do not have permission to access it.",
         );
       } else {
         setJob(data as Job);
@@ -115,7 +124,7 @@ function ManagerTokenPageContent() {
               Authorization: `Bearer ${session.access_token}`,
             },
             cache: "no-store",
-          }
+          },
         );
 
         const result = await response.json();
@@ -130,9 +139,7 @@ function ManagerTokenPageContent() {
       } catch (err) {
         if (active) {
           setApplicationsError(
-            err instanceof Error
-              ? err.message
-              : "Failed to load applications"
+            err instanceof Error ? err.message : "Failed to load applications",
           );
         }
       } finally {
@@ -221,10 +228,7 @@ function ManagerTokenPageContent() {
             </strong>
           </div>
           <div className="mgr-track">
-            <div
-              className="mgr-fill"
-              style={{ width: `${progress}%` }}
-            />
+            <div className="mgr-fill" style={{ width: `${progress}%` }} />
           </div>
           <p>
             {applicationsLoading
@@ -248,10 +252,7 @@ function ManagerTokenPageContent() {
             <div style={{ padding: 30, textAlign: "center" }}>
               <h3>Could not load applications</h3>
               <p>{applicationsError}</p>
-              <button
-                type="button"
-                onClick={() => window.location.reload()}
-              >
+              <button type="button" onClick={() => window.location.reload()}>
                 Reload Manager
               </button>
             </div>
@@ -263,8 +264,8 @@ function ManagerTokenPageContent() {
             <div style={{ padding: 30, textAlign: "center" }}>
               <h3>No applications received yet</h3>
               <p>
-                Candidate applications and PDF CV documents will appear
-                here after candidates submit their applications.
+                Candidate applications and PDF CV documents will appear here
+                after candidates submit their applications.
               </p>
             </div>
           ) : (
@@ -274,7 +275,7 @@ function ManagerTokenPageContent() {
                 style={{
                   width: "100%",
                   borderCollapse: "collapse",
-                  minWidth: 850,
+                  minWidth: 1250,
                 }}
               >
                 <thead>
@@ -282,23 +283,27 @@ function ManagerTokenPageContent() {
                     <th>No.</th>
                     <th>Candidate Name</th>
                     <th>WhatsApp</th>
+                    <th>Email</th>
+                    <th>Education</th>
+                    <th>Experience</th>
+                    <th>Skills</th>
+                    <th>Address</th>
                     <th>Applied</th>
-                    <th>CV Document</th>
-                    <th>Extraction</th>
+                    <th>CV</th>
                   </tr>
                 </thead>
                 <tbody>
                   {applications.map((application, index) => {
-                    const phone = (
-                      application.applicant_whatsapp || ""
-                    ).replace(/\D/g, "");
+                    const cv = application.cv_parsed_data || {};
+                    const name = cv.name || application.applicant_name;
+                    const whatsapp =
+                      cv.whatsapp || application.applicant_whatsapp;
+                    const phone = (whatsapp || "").replace(/\D/g, "");
 
                     return (
                       <tr key={application.id}>
                         <td>{index + 1}</td>
-                        <td>
-                          {application.applicant_name || "Not extracted"}
-                        </td>
+                        <td>{name || "—"}</td>
                         <td>
                           {phone ? (
                             <a
@@ -306,16 +311,21 @@ function ManagerTokenPageContent() {
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              {application.applicant_whatsapp}
+                              {whatsapp}
                             </a>
                           ) : (
-                            "Not found"
+                            "—"
                           )}
                         </td>
+                        <td>{cv.email || "—"}</td>
+                        <td>{cv.education || "—"}</td>
+                        <td>{cv.experience || "—"}</td>
+                        <td>{cv.skills || "—"}</td>
+                        <td>{cv.address || "—"}</td>
                         <td>
                           {application.created_at
                             ? new Date(
-                                application.created_at
+                                application.created_at,
                               ).toLocaleDateString("id-ID")
                             : "—"}
                         </td>
@@ -326,14 +336,11 @@ function ManagerTokenPageContent() {
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              Open PDF
+                              📄 PDF
                             </a>
                           ) : (
-                            "CV unavailable"
+                            "—"
                           )}
-                        </td>
-                        <td>
-                          {application.cv_extraction_status || "pending"}
                         </td>
                       </tr>
                     );
@@ -345,8 +352,8 @@ function ManagerTokenPageContent() {
         </div>
 
         <p className="mgr-note">
-          Vacancy-specific manager. Only applications linked to this job
-          will be displayed.
+          Vacancy-specific manager. Only applications linked to this job will be
+          displayed.
         </p>
       </div>
     </main>
@@ -355,7 +362,13 @@ function ManagerTokenPageContent() {
 
 export default function ManagerTokenPage() {
   return (
-    <Suspense fallback={<main><p>Loading...</p></main>}>
+    <Suspense
+      fallback={
+        <main>
+          <p>Loading...</p>
+        </main>
+      }
+    >
       <ManagerTokenPageContent />
     </Suspense>
   );

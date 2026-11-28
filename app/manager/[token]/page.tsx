@@ -174,24 +174,52 @@ function ManagerTokenPageContent() {
       setHashkeysLoading(true);
       setHashkeysError("");
 
-      const { data, error } = await supabase
-        .from("job_hashkeys")
-        .select("id, hash_key, tier, status, created_at")
-        .eq("job_id", jobId)
-        .eq("status", "active")
-        .is("candidate_id", null)
-        .order("created_at", { ascending: true });
+      try {
+        const {
+          data: sessionData,
+          error: sessionError,
+        } = await supabase.auth.getSession();
 
-      if (!active) return;
+        if (sessionError) {
+          throw new Error(sessionError.message);
+        }
 
-      if (error) {
-        setHashkeysError(error.message);
+        const accessToken = sessionData.session?.access_token;
+
+        if (!accessToken) {
+          throw new Error("Session login tidak ditemukan.");
+        }
+
+        const response = await fetch(
+          `/api/manager/${encodeURIComponent(token)}/hashkeys`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || "Gagal memuat HashKeys.");
+        }
+
+        if (!active) return;
+
+        setHashkeys((result.hashkeys || []) as HashKey[]);
+      } catch (error) {
+        if (!active) return;
+
+        setHashkeysError(
+          error instanceof Error ? error.message : "Gagal memuat HashKeys.",
+        );
         setHashkeys([]);
-      } else {
-        setHashkeys((data || []) as HashKey[]);
+      } finally {
+        if (active) {
+          setHashkeysLoading(false);
+        }
       }
-
-      setHashkeysLoading(false);
     }
 
     loadHashkeys();

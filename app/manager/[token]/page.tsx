@@ -14,6 +14,14 @@ type Job = {
   created_at: string;
 };
 
+type HashKey = {
+  id: string;
+  hash_key: string;
+  tier: "normal" | "premium";
+  status: string;
+  created_at: string;
+};
+
 type Application = {
   id: string;
   applicant_name: string | null;
@@ -42,6 +50,9 @@ function ManagerTokenPageContent() {
   const [applicationsLoading, setApplicationsLoading] = useState(false);
   const [error, setError] = useState("");
   const [applicationsError, setApplicationsError] = useState("");
+  const [hashkeys, setHashkeys] = useState<HashKey[]>([]);
+  const [hashkeysLoading, setHashkeysLoading] = useState(false);
+  const [hashkeysError, setHashkeysError] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -153,6 +164,43 @@ function ManagerTokenPageContent() {
   }, [job, token]);
 
 
+  useEffect(() => {
+    if (!job) return;
+
+    const jobId = job.id;
+    let active = true;
+
+    async function loadHashkeys() {
+      setHashkeysLoading(true);
+      setHashkeysError("");
+
+      const { data, error } = await supabase
+        .from("job_hashkeys")
+        .select("id, hash_key, tier, status, created_at")
+        .eq("job_id", jobId)
+        .eq("status", "active")
+        .is("candidate_id", null)
+        .order("created_at", { ascending: true });
+
+      if (!active) return;
+
+      if (error) {
+        setHashkeysError(error.message);
+        setHashkeys([]);
+      } else {
+        setHashkeys((data || []) as HashKey[]);
+      }
+
+      setHashkeysLoading(false);
+    }
+
+    loadHashkeys();
+
+    return () => {
+      active = false;
+    };
+  }, [job]);
+
   if (loading) {
     return <main style={{ padding: 40 }}>Loading vacancy manager...</main>;
   }
@@ -213,6 +261,113 @@ function ManagerTokenPageContent() {
             <span>{job.company_name}</span>
             <strong>{job.token}</strong>
           </div>
+        </section>
+
+        <section
+          style={{
+            marginTop: 24,
+            padding: 24,
+            border: "1px solid #dbe3ee",
+            borderRadius: 16,
+            background: "#ffffff",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 12,
+              flexWrap: "wrap",
+            }}
+          >
+            <div>
+              <span className="mgr-muted">INVITATION ACCESS</span>
+              <h2 style={{ margin: "8px 0" }}>Vacancy HashKeys</h2>
+              <p style={{ margin: 0, color: "#64748b" }}>
+                Active invitation keys available for this vacancy.
+              </p>
+            </div>
+
+            <strong
+              style={{
+                fontSize: 24,
+                padding: "8px 16px",
+                borderRadius: 12,
+                background: "#eef2ff",
+                color: "#3730a3",
+              }}
+            >
+              {hashkeysLoading ? "…" : hashkeys.length}
+              <span style={{ fontSize: 13, fontWeight: 400 }}>
+                {" "}available
+              </span>
+            </strong>
+          </div>
+
+          {hashkeysError ? (
+            <p style={{ color: "#b91c1c", marginTop: 18 }}>
+              Could not load HashKeys: {hashkeysError}
+            </p>
+          ) : hashkeysLoading ? (
+            <p style={{ marginTop: 18 }}>Loading HashKeys...</p>
+          ) : hashkeys.length === 0 ? (
+            <p style={{ marginTop: 18, color: "#64748b" }}>
+              No active unassigned HashKeys are available for this vacancy.
+            </p>
+          ) : (
+            <div style={{ overflowX: "auto", marginTop: 20 }}>
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  minWidth: 480,
+                }}
+              >
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: "left", padding: 10 }}>HashKey</th>
+                    <th style={{ textAlign: "left", padding: 10 }}>Tier</th>
+                    <th style={{ textAlign: "left", padding: 10 }}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hashkeys.map((key) => (
+                    <tr key={key.id}>
+                      <td
+                        style={{
+                          padding: 10,
+                          borderTop: "1px solid #e2e8f0",
+                          fontFamily: "monospace",
+                          overflowWrap: "anywhere",
+                        }}
+                      >
+                        {key.hash_key}
+                      </td>
+                      <td style={{ padding: 10, borderTop: "1px solid #e2e8f0" }}>
+                        <span
+                          style={{
+                            padding: "4px 9px",
+                            borderRadius: 20,
+                            background:
+                              key.tier === "premium" ? "#fef3c7" : "#e0f2fe",
+                            color:
+                              key.tier === "premium" ? "#92400e" : "#075985",
+                            fontSize: 12,
+                          }}
+                        >
+                          {key.tier === "premium" ? "Premium" : "Normal"}
+                        </span>
+                      </td>
+                      <td style={{ padding: 10, borderTop: "1px solid #e2e8f0" }}>
+                        Active
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </section>
 
         <section className="mgr-progress">

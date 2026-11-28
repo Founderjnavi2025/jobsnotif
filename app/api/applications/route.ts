@@ -15,6 +15,9 @@ export async function POST(request: Request) {
     const applicantInterest = String(formData.get("applicant_interest") || "").trim();
     const applicantSkills = String(formData.get("applicant_skills") || "").trim();
     const applicantEducation = String(formData.get("applicant_education") || "").trim();
+    const applicantCity = String(formData.get("applicant_city") || "").trim();
+    const applicantRegion = String(formData.get("applicant_region") || "").trim();
+    const hashKey = String(formData.get("hash_key") || "").trim();
     const file = formData.get("cv");
 
     if (!token || !browserKey) {
@@ -24,9 +27,18 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!applicantName || !applicantWhatsapp) {
+    if (
+      !applicantName ||
+      !applicantWhatsapp ||
+      !applicantInterest ||
+      !applicantSkills ||
+      !applicantEducation ||
+      !applicantCity ||
+      !applicantRegion ||
+      !hashKey
+    ) {
       return NextResponse.json(
-        { error: "Nama dan WhatsApp wajib diisi." },
+        { error: "Semua data kandidat dan HashKey wajib diisi." },
         { status: 400 },
       );
     }
@@ -113,6 +125,31 @@ export async function POST(request: Request) {
       );
     }
 
+    const { data: availableKey, error: hashkeyCheckError } =
+      await supabaseAdmin
+        .from("job_hashkeys")
+        .select("id")
+        .eq("job_id", job.id)
+        .eq("hash_key", hashKey)
+        .eq("status", "active")
+        .is("application_id", null)
+        .maybeSingle();
+
+    if (hashkeyCheckError) {
+      console.error("Submit HashKey check:", hashkeyCheckError.message);
+      return NextResponse.json(
+        { error: "Gagal memeriksa HashKey." },
+        { status: 500 },
+      );
+    }
+
+    if (!availableKey) {
+      return NextResponse.json(
+        { error: "HashKey tidak valid atau sudah digunakan." },
+        { status: 400 },
+      );
+    }
+
     const filename = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 100);
 
     const cvPath = `${job.id}/${randomUUID()}-${filename}`;
@@ -135,35 +172,51 @@ export async function POST(request: Request) {
       );
     }
 
-    // Simpan data lamaran
-    const { data: application, error: insertError } = await supabaseAdmin
-      .from("job_applications")
-      .insert({
-        job_id: job.id,
-        job_token: job.token,
-        cv_path: cvPath,
-        cv_filename: filename,
-        browser_key: browserKey,
-        applicant_name: applicantName,
-        applicant_whatsapp: applicantWhatsapp,
-        cv_parsed_data: {
+    // Simpan aplikasi dan konsumsi HashKey dalam satu transaksi RPC.
+    const { data: applicationId, error: insertError } =
+      await supabaseAdmin.rpc("submit_application_with_hashkey", {
+        p_job_id: job.id,
+        p_job_token: job.token,
+        p_hash_key: hashKey,
+        p_cv_path: cvPath,
+        p_cv_filename: filename,
+        p_browser_key: browserKey,
+        p_applicant_name: applicantName,
+        p_applicant_whatsapp: applicantWhatsapp,
+        p_cv_parsed_data: {
           name: applicantName,
           whatsapp: applicantWhatsapp,
-          interest: applicantInterest || null,
-          skills: applicantSkills || null,
-          education: applicantEducation || null,
+          interest: applicantInterest,
+          skills: applicantSkills,
+          education: applicantEducation,
+          city: applicantCity,
+          region: applicantRegion,
         },
-      })
-      .select("id")
-      .single();
+      });
 
-    if (insertError) {
-      // Hapus file jika data gagal disimpan
+    if (insertError || !applicationId) {
+      // Jika transaksi gagal, hapus PDF. HashKey akan rollback di PostgreSQL.
       await supabaseAdmin.storage.from("job-cvs").remove([cvPath]);
 
-      console.error("Application insert:", insertError.message);
+      const message = insertError?.message || "";
 
-      if (insertError.code === "23505") {
+      console.error("Application RPC:", message);
+
+      if (message.includes("HASHKEY_INVALID_OR_USED")) {
+        return NextResponse.json(
+          { error: "HashKey sudah digunakan atau tidak valid. Periksa kembali." },
+          { status: 409 },
+        );
+      }
+
+      if (message.includes("JOB_NOT_AVAILABLE")) {
+        return NextResponse.json(
+          { error: "Vacancy sudah tidak menerima lamaran." },
+          { status: 400 },
+        );
+      }
+
+      if (insertError?.code === "23505") {
         return NextResponse.json(
           { error: "Browser ini sudah pernah melamar." },
           { status: 409 },
@@ -171,14 +224,14 @@ export async function POST(request: Request) {
       }
 
       return NextResponse.json(
-        { error: "Gagal menyimpan data lamaran." },
+        { error: "Gagal menyimpan lamaran. HashKey belum dikonsumsi." },
         { status: 500 },
       );
     }
 
     return NextResponse.json({
       success: true,
-      application_id: application.id,
+      application_id: applicationId,
       message: "CV dan data lamaran berhasil disimpan.",
     });
   } catch (error) {

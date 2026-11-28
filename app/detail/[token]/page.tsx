@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function JobDetailContent() {
   const params = useParams<{ token: string }>();
@@ -16,6 +16,60 @@ function JobDetailContent() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [debugTxt, setDebugTxt] = useState("");
+  const [hashKey, setHashKey] = useState("");
+  const [hashKeyStatus, setHashKeyStatus] = useState<
+    "empty" | "checking" | "valid" | "invalid"
+  >("empty");
+  const [hashKeyMessage, setHashKeyMessage] = useState("");
+  const [formValid, setFormValid] = useState(false);
+
+  useEffect(() => {
+    const value = hashKey.trim();
+
+    if (!value) {
+      setHashKeyStatus("empty");
+      setHashKeyMessage("");
+      return;
+    }
+
+    setHashKeyStatus("checking");
+    setHashKeyMessage("Memeriksa HashKey...");
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(async () => {
+      try {
+        const response = await fetch("/api/applications/check-hashkey", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token,
+            hash_key: value,
+          }),
+          signal: controller.signal,
+        });
+
+        const result = await response.json();
+
+        if (result.valid) {
+          setHashKeyStatus("valid");
+          setHashKeyMessage("HashKey valid untuk vacancy ini. Bisa melamar.");
+        } else {
+          setHashKeyStatus("invalid");
+          setHashKeyMessage(result.error || "HashKey tidak valid.");
+        }
+      } catch (error) {
+        if (controller.signal.aborted) return;
+
+        setHashKeyStatus("invalid");
+        setHashKeyMessage("Tidak dapat memeriksa HashKey. Coba lagi.");
+      }
+    }, 450);
+
+    return () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [hashKey, token]);
 
   function goToApply() {
     setWelcome(false);
@@ -42,6 +96,11 @@ function JobDetailContent() {
 
   async function submitApplication(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (hashKeyStatus !== "valid") {
+      setError("HashKey harus valid sebelum melamar.");
+      return;
+    }
 
     if (!file) {
       setError("Please upload your CV before submitting.");
@@ -242,30 +301,84 @@ function JobDetailContent() {
           <h2>Apply for This Job</h2>
           <p>Upload your CV in PDF format to submit your application.</p>
 
-          <form onSubmit={submitApplication}>
+          <form
+            onSubmit={submitApplication}
+            onInput={(e) => setFormValid(e.currentTarget.checkValidity())}
+          >
             <div className="job-application-fields">
               <label>
-                Nama Lengkap
+                HashKey Undangan *
+                <input
+                  type="text"
+                  name="hash_key"
+                  value={hashKey}
+                  onChange={(e) => setHashKey(e.target.value)}
+                  placeholder="Masukkan HashKey dari undangan"
+                  autoComplete="off"
+                  required
+                />
+                <small
+                  style={{
+                    display: "block",
+                    marginTop: 8,
+                    color:
+                      hashKeyStatus === "valid"
+                        ? "#16803c"
+                        : hashKeyStatus === "invalid"
+                          ? "#c62828"
+                          : "#777",
+                  }}
+                >
+                  {hashKeyMessage || "HashKey akan diperiksa otomatis."}
+                </small>
+              </label>
+
+              <label>
+                Nama Lengkap *
                 <input
                   type="text"
                   name="applicant_name"
-                  placeholder="Nama lengkap"
+                  placeholder="Nama sesuai identitas"
+                  autoComplete="name"
                   required
                 />
               </label>
 
               <label>
-                Nomor WhatsApp
+                Nomor WhatsApp *
                 <input
                   type="tel"
                   name="applicant_whatsapp"
                   placeholder="08xxxxxxxxxx"
+                  autoComplete="tel"
                   required
                 />
               </label>
 
               <label>
-                Minat Pekerjaan
+                Kota *
+                <input
+                  type="text"
+                  name="applicant_city"
+                  placeholder="Contoh: Bandung"
+                  autoComplete="address-level2"
+                  required
+                />
+              </label>
+
+              <label>
+                Daerah / Provinsi *
+                <input
+                  type="text"
+                  name="applicant_region"
+                  placeholder="Contoh: Jawa Barat"
+                  autoComplete="address-level1"
+                  required
+                />
+              </label>
+
+              <label>
+                Minat Pekerjaan *
                 <input
                   type="text"
                   name="applicant_interest"
@@ -275,18 +388,9 @@ function JobDetailContent() {
               </label>
 
               <label>
-                Keahlian
-                <textarea
-                  name="applicant_skills"
-                  placeholder="Tuliskan keahlian yang dimiliki"
-                  required
-                />
-              </label>
-
-              <label>
-                Pendidikan Terakhir
-                <select name="applicant_education" required>
-                  <option value="">Pilih pendidikan</option>
+                Pendidikan Terakhir *
+                <select name="applicant_education" required defaultValue="">
+                  <option value="" disabled>Pilih pendidikan</option>
                   <option value="SD">SD</option>
                   <option value="SMP">SMP</option>
                   <option value="SMA/SMK">SMA / SMK</option>
@@ -297,6 +401,16 @@ function JobDetailContent() {
                   <option value="Lainnya">Lainnya</option>
                 </select>
               </label>
+
+              <label>
+                Keahlian *
+                <textarea
+                  name="applicant_skills"
+                  placeholder="Tuliskan keahlian yang dimiliki"
+                  rows={4}
+                  required
+                />
+              </label>
             </div>
 
             <label className="job-upload-box">
@@ -306,7 +420,11 @@ function JobDetailContent() {
               <input
                 type="file"
                 accept="application/pdf"
-                onChange={(e) => chooseFile(e.target.files?.[0])}
+                required
+                onChange={(e) => {
+                  chooseFile(e.target.files?.[0]);
+                  setFormValid(e.currentTarget.form?.checkValidity() ?? false);
+                }}
               />
               {file && (
                 <span className="job-upload-selected">
@@ -320,7 +438,12 @@ function JobDetailContent() {
             <button
               type="submit"
               className="job-detail-submit"
-              disabled={uploading}
+              disabled={
+                uploading ||
+                !formValid ||
+                hashKeyStatus !== "valid" ||
+                !file
+              }
             >
               {uploading ? "Uploading CV..." : "Submit Application"}
               {!uploading && <span> →</span>}

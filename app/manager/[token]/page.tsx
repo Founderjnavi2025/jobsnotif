@@ -256,7 +256,7 @@ function ManagerTokenPageContent() {
   return (
     <main className="mgr-page">
       <header className="mgr-header">
-        <Link href="/" className="mgr-brand">
+        <Link href="/business-profile" className="mgr-brand">
           <span className="mgr-logo">J</span>
           JobsNotif
         </Link>

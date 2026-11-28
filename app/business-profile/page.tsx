@@ -110,7 +110,7 @@ export default function BusinessProfilePage() {
   return (
     <main className="bp-clean" style={{ maxWidth: 900, margin: "0 auto", padding: 20, fontFamily: "sans-serif" }}>
       <header className="bp-clean-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-        <Link href="/" style={{ fontWeight: 800, fontSize: 20, textDecoration: "none", color: "#111" }}>jobsnotif <small style={{ fontWeight: 400, fontSize: 12 }}>AI Job Alerts</small></Link>
+        <Link href="/business-profile" style={{ fontWeight: 800, fontSize: 20, textDecoration: "none", color: "#111" }}>jobsnotif <small style={{ fontWeight: 400, fontSize: 12 }}>AI Job Alerts</small></Link>
         <span style={{ background: "#111", color: "#fff", padding: "6px 12px", borderRadius: 999, fontSize: 12 }}>Business Account</span>
       </header>
 

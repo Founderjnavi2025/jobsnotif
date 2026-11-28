@@ -66,7 +66,7 @@ function JobDetailContent() {
         localStorage.setItem(storageKey, browserKey);
       }
 
-      const formData = new FormData();
+      const formData = new FormData(e.currentTarget);
       formData.append("token", token);
       formData.append("browser_key", browserKey);
       formData.append("cv", file);
@@ -243,6 +243,62 @@ function JobDetailContent() {
           <p>Upload your CV in PDF format to submit your application.</p>
 
           <form onSubmit={submitApplication}>
+            <div className="job-application-fields">
+              <label>
+                Nama Lengkap
+                <input
+                  type="text"
+                  name="applicant_name"
+                  placeholder="Nama lengkap"
+                  required
+                />
+              </label>
+
+              <label>
+                Nomor WhatsApp
+                <input
+                  type="tel"
+                  name="applicant_whatsapp"
+                  placeholder="08xxxxxxxxxx"
+                  required
+                />
+              </label>
+
+              <label>
+                Minat Pekerjaan
+                <input
+                  type="text"
+                  name="applicant_interest"
+                  placeholder="Contoh: Staff produksi"
+                  required
+                />
+              </label>
+
+              <label>
+                Keahlian
+                <textarea
+                  name="applicant_skills"
+                  placeholder="Tuliskan keahlian yang dimiliki"
+                  required
+                />
+              </label>
+
+              <label>
+                Pendidikan Terakhir
+                <select name="applicant_education" required>
+                  <option value="">Pilih pendidikan</option>
+                  <option value="SD">SD</option>
+                  <option value="SMP">SMP</option>
+                  <option value="SMA/SMK">SMA / SMK</option>
+                  <option value="Diploma">Diploma</option>
+                  <option value="S1">S1</option>
+                  <option value="S2">S2</option>
+                  <option value="S3">S3</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+              </label>
+            </div>
+
             <label className="job-upload-box">
               <span className="job-upload-icon">↑</span>
               <strong>Upload Your CV</strong>

@@ -22,11 +22,9 @@ type Application = {
   cv_parsed_data: {
     name?: string;
     whatsapp?: string;
-    email?: string;
     education?: string;
-    experience?: string;
+    interest?: string;
     skills?: string;
-    address?: string;
     full_text?: string;
   } | null;
   created_at: string;
@@ -154,6 +152,7 @@ function ManagerTokenPageContent() {
     };
   }, [job, token]);
 
+
   if (loading) {
     return <main style={{ padding: 40 }}>Loading vacancy manager...</main>;
   }
@@ -275,7 +274,7 @@ function ManagerTokenPageContent() {
                 style={{
                   width: "100%",
                   borderCollapse: "collapse",
-                  minWidth: 1250,
+                  minWidth: 950,
                 }}
               >
                 <thead>
@@ -283,11 +282,9 @@ function ManagerTokenPageContent() {
                     <th>No.</th>
                     <th>Candidate Name</th>
                     <th>WhatsApp</th>
-                    <th>Email</th>
+                    <th>Job Interest</th>
                     <th>Education</th>
-                    <th>Experience</th>
                     <th>Skills</th>
-                    <th>Address</th>
                     <th>Applied</th>
                     <th>CV</th>
                   </tr>
@@ -317,11 +314,9 @@ function ManagerTokenPageContent() {
                             "—"
                           )}
                         </td>
-                        <td>{cv.email || "—"}</td>
+                        <td>{cv.interest || "—"}</td>
                         <td>{cv.education || "—"}</td>
-                        <td>{cv.experience || "—"}</td>
                         <td>{cv.skills || "—"}</td>
-                        <td>{cv.address || "—"}</td>
                         <td>
                           {application.created_at
                             ? new Date(
